@@ -1,0 +1,16 @@
+{
+  "name": "simpletree",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "colorette": "^2.0.19",
+    "jest": "^29.5.0"
+  }
+}

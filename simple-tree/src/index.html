@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing Tree</title>
+
+    <link  rel="stylesheet" href="index.css" >
+
+
+ 
+</head>
+<body>
+    <div class="wrapper">
+        <div id="header">
+            <div class="header-rotated-section">
+                <span class="header-title">Testing Tree!</span>
+            </div>
+            
+        </div>
+        <div class="page">
+            <div id="center-section">
+               <h3>is another text!</h3>
+
+               <canvas id="tree-canvas"  width="700px" height="700px" >Your browser does not support the HTML5 canvas tag.</canvas>
+            </div>
+        </div>
+       
+    </div>
+
+     <!-- <script type="module"  src="Tree.js"> -->
+     <script type="module">
+
+        import { init,render } from './index.js';
+
+
+        init();
+        // test();
+        render();
+    </script> 
+
+</body>
+</html>
