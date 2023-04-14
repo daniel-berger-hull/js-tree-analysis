@@ -1,11 +1,16 @@
 import { Node , renderNode , displayNodes } from './Tree.js';
 
 
+const NODE_WIDTH            =   50;
+const NODE_HEIGTH           =   50;
 
-let allNodes = [];
-let myCenterNode = {};
+const NODE_SPACE_BETWEEN_X  =   5;
+const NODE_SPACE_BETWEEN_Y  =   40;
 
-let otherNode = {};
+
+let rootNode = {};
+
+// let otherNode = {};
 
 
 
@@ -14,65 +19,111 @@ let otherNode = {};
 
 export const init = () => {
 
-    myCenterNode = new Node(50);
-    otherNode = new Node(1);
+    let allNodes = [];
+
+    rootNode = new Node(50);
+    // otherNode = new Node(1);
 
     console.log('Init: Create Random Values for Nodes...');
-    for (let i=0;i<10;i++) {
+    for (let i=0;i<5;i++) {
         const newValue = Math.round( Math.random() * 99) + 1;
-        //console.log(`${i} = ${newValue}`);
         allNodes.push(newValue);
     }
 
     console.log("Init: Initial Random values:");
     console.log( allNodes );
     
-    console.log("Init: Inserting all the random values in the tree...");
-    allNodes.forEach( (element) => {  myCenterNode.insert(element); })
+    // console.log("Init: Inserting all the random values in the tree...");
+    allNodes.forEach( (element) => {  rootNode.insert(element); })
 
 
-    console.log("Will display nodes...");
-    displayNodes(myCenterNode);
-    console.log("Display nodes done!");
+    // console.log("Will display nodes...");
+    // displayNodes(rootNode);
+    // console.log("Display nodes done!");
 
-    console.log("Depth Search...");
-    console.log(myCenterNode.depth(0));
-    console.log("Depth Done!");
-
+   
     
-
 }
 
 export const render = () => {
     console.log("Render called...");
-    var c = document.getElementById("tree-canvas");
-    var ctx = c.getContext("2d");
+    var canvas = document.getElementById("tree-canvas");
+    var ctx = canvas.getContext("2d");
 
 
-    // export const renderNode = (context, position, size) => {
+    var canvasWidth = canvas.width;
+    var canvasHeight = canvas.height;
 
 
-    renderNode( ctx, {x: 50,y: 50}, 25 ,  myCenterNode);
-    renderNode( ctx, {x: 150,y: 50}, 25 ,  otherNode);
+    const treeDepth = rootNode.depth(0);
+    const treeWidth = rootNode.width();
 
+    const treeWidthSpan = (treeWidth * NODE_WIDTH) + ((treeWidth-1) * NODE_SPACE_BETWEEN_X) ;    
+//    const treeHeightSpan = (treeDepth-1) * NODE_SPACE_BETWEEN_Y;
+    const treeHeightSpan = (treeDepth * NODE_HEIGTH) + ( (treeDepth-1) * NODE_SPACE_BETWEEN_Y)
+    const treeInterRowSpace = NODE_HEIGTH + NODE_SPACE_BETWEEN_Y;
+
+
+    const marginX = (canvasWidth - treeWidthSpan)/ 2;
+    const marginY = (canvasHeight - treeHeightSpan)/ 2;
+        
+
+
+
+
+    console.log(`Canvas Size = [${canvasWidth},${canvasHeight}]`);
     
+    console.log(`Tree Depth ${treeDepth}`);
+    console.log(`Tree Width ${treeWidth}`);
+    console.log(`Total Tree size is [${treeWidthSpan},${treeHeightSpan}]`);
+    
+    // console.log(`Tree Width ${treeWidth}`);
+
+
+
+    //  let xPos = marginX;
+    //  for (let xPos=marginX;xPos<canvasWidth;xPos+=50){
+    // //    for (let i=0;i<xPos+=50;xPos<canvasWidth){
+
+    //      renderNode( ctx, {x: xPos,y: 50}, 25 ,  rootNode);
+    //  }
+
+   
+
+
+
+    ctx.fillStyle = "#FBED20;";
+    // ctx.fillRect(20, 20, 150, 100);
+
+    ctx.lineWidth = "5";
+    ctx.strokeStyle = "#FF0000";
+    ctx.beginPath();
+    ctx.rect(marginX, marginY, treeWidthSpan, treeHeightSpan);
+    ctx.stroke();
+
+
+    ctx.strokeStyle = "#FBED20";
+    let yPos = marginY;
+    let xStart = marginX;
+    let xCenter = marginX + (treeWidthSpan/2); 
+    let xEnd = marginX + treeWidthSpan;
+    for (let row=0; row< treeDepth; row++){
+
+        ctx.beginPath();
+        ctx.moveTo(xStart, yPos);
+        ctx.lineTo(xEnd, yPos);
+        ctx.stroke();
+
+        renderNode( ctx, {x: xCenter,y: yPos}, 25 ,  rootNode);
+
+        yPos += treeInterRowSpace;
+    }
+
+    // renderNode( ctx, {x: 50,y: 50}, 25 ,  rootNode);
+    // renderNode( ctx, {x: 150,y: 50}, 25 ,  otherNode);
+
 
 }
-
-// ctx.strokeStyle = "#FF0000";
-    // ctx.beginPath();
-    // ctx.arc(100, 100, 10, 0, 2 * Math.PI);
-    // ctx.fillStyle = 'green';
-    // ctx.fill();
-    // ctx.stroke();
-
-    // ctx.strokeStyle = "#00FF00";
-    // ctx.beginPath();
-    // ctx.arc(200, 100, 15, 0, 2 * Math.PI);
-    // ctx.fillStyle = 'white';
-    // ctx.fill();
-    // ctx.stroke();
-
 
 
 

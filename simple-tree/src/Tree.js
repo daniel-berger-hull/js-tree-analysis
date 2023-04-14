@@ -8,6 +8,10 @@ export const VALUE_NOT_FOUND_CODE = -5;
 let currentLevel = 0;
 
 
+
+// Note: A TreeGraph class should be created, as many top level functions , like depth, widht, etc are done at the node level, 
+//       but it should not be here, but in a TreeGraph class...
+
 export class Node {
 
     #value;
@@ -51,6 +55,25 @@ export class Node {
 
     getLeftChild()   {   return this.#leftChild;  }
     getRightChild()  {   return this.#rightChild; }
+
+
+
+    // "Thursday: This function is not completed!!!"
+    getChildLevel(level)   { 
+
+        const currentTreeDepth = this.depth(0);
+
+        if (level > currentTreeDepth) {
+            const message = "You are asking for a level of child node that is not existing in this graph!!!";
+            console.log(message);
+            throw message;
+        }
+
+
+          return this.#leftChild; 
+        
+    }
+   
 
 
     insert(newValue) {
@@ -122,18 +145,28 @@ export class Node {
         }
     }
 
+    // Try to find the deepest level in the sub nodes...
     depth(currentDepth) {
-
 
         currentDepth++;
         let leftDepth = currentDepth;
         let rightDepth = currentDepth;
-        
+
         if ( this.getLeftChild()  !== null) leftDepth = this.getLeftChild().depth(leftDepth);
-        if ( this.getRightChild() !== null) leftDepth = this.getRightChild().depth(rightDepth);
+        if ( this.getRightChild() !== null) rightDepth = this.getRightChild().depth(rightDepth);
 
-        return Math.max(leftDepth, currentDepth, rightDepth)
+        //console.log(`Value: ${this.getValue()} at depth ${currentDepth} left is ${this.getLeftChild()}, right is ${this.getRightChild()}, all values are [${leftDepth} , ${currentDepth} , ${rightDepth}]`);
 
+        return Math.max(leftDepth, currentDepth, rightDepth);
+    }
+
+     // Try to find the total possible width of the node and its sub nodes 
+     // Note: The width doesn't imply that there are 'width' nodes at the last layer of the tree,
+     //       but  it is a possible maximum width...
+     width() {
+
+        const depth = this.depth(0);
+        return 1 << (depth-1);
     }
 
 }
