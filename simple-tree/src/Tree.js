@@ -54,6 +54,15 @@ export class Node {
     getLeftChild()   {   return this.#leftChild;  }
     getRightChild()  {   return this.#rightChild; }
 
+    getChildrenCount() {
+
+        let childCount = 0;
+        if ( this.getLeftChild()  !==  null )   childCount++;
+        if ( this.getRightChild() !==  null )   childCount++;
+    
+        return childCount;
+    }
+
      // "Thursday: This function is not completed!!!"
      getChildLevel(level)   { 
 
@@ -67,7 +76,6 @@ export class Node {
 
 
           return this.#leftChild; 
-        
     }
 
 
@@ -299,13 +307,46 @@ export class TreeGraph {
 
     }
 
+    getNodesInOrder() {
+
+
+        let currentLevel = 1;
+        let nodesStack = [];
+        let nodeList = [];
+
+
+        nodesStack.push( { node: this.getRootNode() , level:currentLevel } );
+
+        while (nodesStack.length !== 0) {
+
+            let nextItem = nodesStack.pop();
+            let currentNode = nextItem.node;
+            let currentLevel = nextItem.level;
+
+            //Must keep track to how low we go in the tree, as it will represent the depth of this tree...
+            if (currentLevel > this.#depth)   this.#depth = currentLevel;
+
+            // Stacking the right side first, will make the exploration of the tree more natural
+            // As the left side will be poped first, and we will exhaust all the left side
+            // and then, pop the right side and to the same...
+            if ( currentNode.getRightChild() !==  null)  
+                nodesStack.push(  { node: currentNode.getRightChild() , level: currentLevel+1 }   );
+
+            if ( currentNode.getLeftChild() !==  null)  
+                nodesStack.push( { node: currentNode.getLeftChild() , level: currentLevel+1 } );
+        }
+
+
+       return nodeList;
+    }
+
     // following will leverage equivalent functions of a Node Tree
     // get All Values
     //displayNodes
 
 }
 
-
+let  currentLevel = 0;
 // Utility function to identify the node's and it children values..
 export const displayNodes = (node) => {
 
@@ -320,6 +361,29 @@ export const displayNodes = (node) => {
 
     currentLevel--;
 }
+
+
+export const displayNodesInOrder = (node) => {
+
+    if (node === null || typeof node === 'undefined')  return;
+
+
+    if ( node.getLeftChild() !==  null)  displayNodesInOrder( node.getLeftChild() );
+    console.log(node.getValue());    
+    if ( node.getRightChild() !==  null)  displayNodesInOrder( node.getRightChild() );
+}
+
+export const displayNodesPostOrder = (node) => {
+
+    if (node === null || typeof node === 'undefined')  return;
+
+
+    if ( node.getLeftChild() !==  null)  displayNodesPostOrder( node.getLeftChild() );
+    if ( node.getRightChild() !==  null)  displayNodesPostOrder( node.getRightChild() );
+    console.log(node.getValue());    
+
+}
+
 
 
 
@@ -338,13 +402,13 @@ export const renderNode = (context, position, size , value) => {
 
     context.textAlign = "center";
     context.textBaseline = "middle"; 
-    context.font = "30px Arial";
+    context.font = "16px Arial";
     const label = value;
 
     context.fillStyle = "black";
-    context.fillText(label, position.x+2, position.y+2);
-    context.fillStyle = "gray";
     context.fillText(label, position.x+1, position.y+1);
+    // context.fillStyle = "gray";
+    // context.fillText(label, position.x+1, position.y+1);
     context.fillStyle = "#0046BE";
     context.fillText(label, position.x, position.y);
    
@@ -352,4 +416,7 @@ export const renderNode = (context, position, size , value) => {
 
 
 
-
+// Sunday
+// 1 - Add a getNodesByLevel
+//  This is a variation of the existing getValuesByLevel
+//  Node the getValuesByLevel could call internally the future getNodesByLevel

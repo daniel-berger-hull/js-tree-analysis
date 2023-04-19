@@ -1,4 +1,4 @@
-import { Node , TreeGraph, renderNode , displayNodes } from './Tree.js';
+import { Node , TreeGraph, renderNode , displayNodes, displayNodesInOrder , displayNodesPostOrder} from './Tree.js';
 
 
 const NODE_WIDTH            =   50;
@@ -9,6 +9,18 @@ const NODE_SPACE_BETWEEN_Y  =   40;
 
 
 let treeGraph =  {};
+let nodesStack = [];
+
+
+// To Do: 
+//  1- Add calculate general param function
+//    Transfer all the calculation in the beginning of the render function into its own calculateRender...  function
+//    And use a global JSON object to have them accessible to all other functions of this file 
+//
+//  2 - Render precalculation
+//     I can't draw line between node, as line has to be drawn first, under the circle of the node
+//     And currently, that mean that I would know the coordinate of where node will be drawn 
+
 
 
 
@@ -22,10 +34,26 @@ export const init = () => {
 
 
     console.log('Init: Create Random Values for Nodes...');
-    for (let i=0;i<5;i++) {
-        const newValue = Math.round( Math.random() * 99) + 1;
-        allNodes.push(newValue);
-    }
+    // for (let i=0;i<8;i++) {
+    //     const newValue = Math.round( Math.random() * 99) + 1;
+    //     allNodes.push(newValue);
+    // }
+
+    allNodes.push(25);
+    allNodes.push(75);
+    allNodes.push(15);
+    allNodes.push(35);
+    allNodes.push(60);
+    allNodes.push(90);
+    allNodes.push(7);
+    allNodes.push(20);
+    allNodes.push(30);
+    allNodes.push(40);
+    
+
+    
+
+
 
     console.log("Init: Initial Random values:");
     console.log( allNodes );
@@ -39,13 +67,85 @@ export const init = () => {
     console.log(`Init: Tree Depth = ${treeGraph.getDepth()} , Width = ${treeGraph.getWidth()}`);
 
 
+    console.log(`Init: Display Nodes In Order`);
+    displayNodesInOrder(treeGraph.getRootNode());
+    console.log(`Init: Display Nodes Post Order`);
+    displayNodesPostOrder(treeGraph.getRootNode());
+
+
+    
+
+
     
 }
+
+
+
+const stack1Children = (node, nodeCoords) => { 
+
+    let childNode = null;
+    if ( node.getLeftChild() !==  null)           
+        childNode = node.getLeftChild();
+    else  if ( node.getRightChild() !==  null)    
+        childNode = node.getRightChild();
+    else  
+        throw "There is not child node to stack!";
+
+
+    //The x span or width of the single children should exactly the same as the parent: Will use vertical line for single child to save space...
+    const subXSpan = nodeCoords.dx;
+    const subYSpan = nodeCoords.dy;
+   // The x Position of the children are half way to the left and right this node..
+   const xChild  = nodeCoords.x;
+   const yChild  = nodeCoords.y + nodeCoords.dy;
+
+   nodesStack.push( {   x:  xChild,
+                        y:  yChild,
+                        dx: subXSpan,
+                        dy: subYSpan,
+                        node: childNode });
+
+}
+
+const stack2Children = (node, nodeCoords) => { 
+
+    //All the arithmetic of this method relies on having 2 sub nodes!
+    if ( node.getLeftChild() ===  null ||   node.getRightChild() ===  null)  {
+        throw "The stackChildren method should be called only on nodes having exactly 2 children!";
+    }
+
+    //The x span or widht of the children should have half of the space, since this is a tree...
+    const subXSpan = Math.round(nodeCoords.dx/2);
+    const subYSpan = nodeCoords.dy;
+    // The x Position of the children are half way to the left and right this node..
+    const xLeftChild  = nodeCoords.x - (Math.round(subXSpan/2));    
+    const xRightChild = nodeCoords.x + (Math.round(subXSpan/2));    
+
+
+    // For the Y, we only go down, so we add the y increment ...
+    const yLeftChild = nodeCoords.y + nodeCoords.dy;
+    const yRightChild = nodeCoords.y + nodeCoords.dy;
+      
+    // Stacking the right side first, will make the exploration of the tree more natural
+    // As the left side will be poped first, and we will exhaust all the left side
+    // and then, pop the right side and to the same...
+    nodesStack.push( {   x:  xRightChild,
+                         y:  yRightChild,
+                         dx:  subXSpan,
+                         dy: subYSpan,
+                         node: node.getRightChild() });
+
+    nodesStack.push( {  x:  xLeftChild,
+                        y:  yLeftChild,
+                        dx:  subXSpan,
+                        dy: subYSpan,
+                        node: node.getLeftChild() });
+}
+
 const renderNodes = (context,xCenter,yPos,xSpan,yIncrement,nodeToDraw) => {
 
 
-    // let currentLevel = 1;
-    let nodesStack = [];
+    nodesStack = [];
 
     nodesStack.push( {   x:  xCenter,
                          y:  yPos,
@@ -60,47 +160,35 @@ const renderNodes = (context,xCenter,yPos,xSpan,yIncrement,nodeToDraw) => {
         let currentNode = nextItem.node;
         
 
-        //Start by draying the node itself
-        renderNode(context, { x: nextItem.x, y: nextItem.y }, 25 , currentNode.getValue());
+        //Start by drawing the node itself
+        renderNode(context, { x: nextItem.x, y: nextItem.y }, 15 , currentNode.getValue());
         
-        
-        // Determine now the relative position of the children...
-        // The x Position of the children are half way to the left and right this node..
-        const xLeftChild  = nextItem.x - (Math.round(nextItem.dx/2));
-        const xRightChild = nextItem.x + (Math.round(nextItem.dx/2));
-        // For the Y, we only go down, so we add the y increment ...
-        const yLeftChild = nextItem.y + nextItem.dy;
-        const yRightChild = nextItem.y + nextItem.dy;
-        
-        //The x span or widht of the children should have half of the space, since this is a tree...
-        const subXSpan = nextItem.dx << 1;
-        const subYSpan = nextItem.dy;
-        
+         // Note: having dedicated methods like stack1Children & stack2Children doesn't look go
+         //       BUT it is the only way for now I can handle the node with one child and have them vertical 
+         //       (instead a pyramid shape like the 2 children notes )
+         //       Can I do better that this?
+          switch( currentNode.getChildrenCount() ) {
+            case 1:
+                stack1Children (  currentNode, 
+                                 { x:   nextItem.x, 
+                                   y:   nextItem.y,
+                                   dx:  nextItem.dx,  
+                                   dy:  nextItem.dy});  
+              break;
+            case 2:
+                 stack2Children (  currentNode, 
+                                  { x:   nextItem.x, 
+                                    y:   nextItem.y,
+                                    dx:  nextItem.dx,  
+                                    dy:  nextItem.dy});  
+              break;
+          } 
 
-        // Stacking the right side first, will make the exploration of the tree more natural
-        // As the left side will be poped first, and we will exhaust all the left side
-        // and then, pop the right side and to the same...
-        if ( currentNode.getRightChild() !==  null)  {
-                nodesStack.push( {   x:  xRightChild,
-                                     y:  yRightChild,
-                                     dx:  subXSpan,
-                                     dy: subYSpan,
-                                     node: currentNode.getRightChild() });
-
-        }
-            // nodesStack.push(  { node: currentNode.getRightChild() , level: currentLevel+1 }   );
-
-        if ( currentNode.getLeftChild() !==  null)  {
-            nodesStack.push( {     x:  xLeftChild,
-                                   y:  yLeftChild,
-                                   dx:  subXSpan,
-                                   dy: subYSpan,
-                                   node: currentNode.getLeftChild() });
-        }
-            // nodesStack.push( { node: currentNode.getLeftChild() , level: currentLevel+1 } );
     }
 
 }
+
+
 
 export const render = () => {
     console.log("Render called...");
@@ -147,32 +235,10 @@ export const render = () => {
     let xEnd = marginX + treeWidthSpan;
 
 
-    // const renderNodes = (context,xCenter,yPos,xSpan,yIncrement,nodeToDraw) => {
-
-    /// Satureday: Just added this function, and hope to draw recursively all the sub nodes!!
-     renderNodes (ctx,
+    renderNodes (ctx,
                  xCenter, yPos, 
-                 treeWidthSpan/2,marginY,
+                 treeWidthSpan,marginY,
                  treeGraph.getRootNode());
-
-    // for (let row=0; row< treeDepth; row++){
-
-    //     ctx.beginPath();
-    //     ctx.moveTo(xStart, yPos);
-    //     ctx.lineTo(xEnd, yPos);
-    //     ctx.stroke();
-
-    //     let xNode = xStart + 20;
-
-    //     //  allNodesByLevel
-    //     for (let col=0; col< allNodesByLevel[row].length; col++){
-    //         renderNode( ctx, {x: xNode,y: yPos}, 25 ,  allNodesByLevel[row][col] );
-
-    //         xNode +=  NODE_WIDTH + NODE_SPACE_BETWEEN_X;  
-    //     }
-        
-    //     yPos += treeInterRowSpace;
-    // }
 
 }
 
