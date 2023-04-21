@@ -5,11 +5,11 @@ import { Node , TreeGraph, renderNode , renderSegment, displayNodes } from './Tr
 
 
 
-const NODE_WIDTH            =   50;
-const NODE_HEIGTH           =   50;
+const NODE_WIDTH            =   25;
+const NODE_HEIGTH           =   25;
 
 const NODE_SPACE_BETWEEN_X  =   5;
-const NODE_SPACE_BETWEEN_Y  =   40;
+const NODE_SPACE_BETWEEN_Y  =   20;
 
 
 let treeGraph =  {};
@@ -42,27 +42,19 @@ export const init = () => {
     treeGraph.insert(50);
 
 
-   // console.log('Init: Create Random Values for Nodes...');
-    for (let i=0;i<8;i++) {
+   // 'Init: Create Random Values for Nodes...
+    for (let i=0;i<16;i++) {
         const newValue = Math.round( Math.random() * 99) + 1;
         allNodes.push(newValue);
     }
 
-    // allNodes.push(25);
-    // allNodes.push(75);
-    // allNodes.push(15);
-    // allNodes.push(35);
-    // allNodes.push(60);
-    // allNodes.push(90);
-    // allNodes.push(7);
-    // allNodes.push(20);
-    // allNodes.push(30);
-    // allNodes.push(40);
+    // allNodes.push(25); // allNodes.push(75); // allNodes.push(15); // allNodes.push(35); // allNodes.push(60);
+    // allNodes.push(90); // allNodes.push(7);  // allNodes.push(20); // allNodes.push(30); // allNodes.push(40);
     
     console.log("Init: Initial Random values:");
     console.log( allNodes );
 
-    // console.log("Init: Inserting all the random values in the tree...");
+    // Inserting all the random values in the tree..."
     allNodes.forEach( (element) => {  treeGraph.insert(element); })
 
 
@@ -95,17 +87,15 @@ const stack1Children = (node, nodeCoords) => {
     //The x span or width of the single children should exactly the same as the parent: Will use vertical line for single child to save space...
     const subXSpan = nodeCoords.dx;
     const subYSpan = nodeCoords.dy;
-   // The x Position of the children are half way to the left and right this node..
-   const xChild  = nodeCoords.x;
-   const yChild  = nodeCoords.y + nodeCoords.dy;
+    // The x Position of the children are half way to the left and right this node..
+    const xChild  = nodeCoords.x;
+    const yChild  = nodeCoords.y + nodeCoords.dy;
 
-   nodesStack.push( {   x:  xChild,
-                        y:  yChild,
-                        dx: subXSpan,
-                        dy: subYSpan,
-                        node: childNode });
-
-
+    nodesStack.push( {   x:  xChild,
+                         y:  yChild,
+                         dx: subXSpan,
+                         dy: subYSpan,
+                         node: childNode });
 
     graphSegmentLocations.push( { xStart: nodeCoords.x, 
                                   yStart:  nodeCoords.y, 
@@ -209,8 +199,6 @@ const renderNodes = (context,xCenter,yPos,xSpan,yIncrement,nodeToDraw) => {
     }
 
 
-
-
     graphSegmentLocations.forEach( segment => { renderSegment(context, 
                                                              { x: segment.xStart, y: segment.yStart } , 
                                                              { x: segment.xEnd,   y: segment.yEnd } , "#00FF00") 
@@ -219,7 +207,7 @@ const renderNodes = (context,xCenter,yPos,xSpan,yIncrement,nodeToDraw) => {
 
 
      graphNodeLocations.forEach( node => {
-         renderNode(context, { x: node.x, y: node.y }, 15 , node.value);
+         renderNode(context, { x: node.x, y: node.y }, 10 , node.value);
      });
     
 }
@@ -231,27 +219,40 @@ export const render = () => {
     var canvas = document.getElementById("tree-canvas");
     var ctx = canvas.getContext("2d");
 
+
+    canvas.width = window.innerWidth - 150;
+
     var canvasWidth  = canvas.width;
     var canvasHeight = canvas.height;
 
     const treeDepth  = treeGraph.getDepth();   
     const treeWidth  = treeGraph.getWidth();
-    const treeWidthSpan = (treeWidth * NODE_WIDTH) + ((treeWidth-1) * NODE_SPACE_BETWEEN_X) ;    
+
+    
+    if ( treeGraph.getWidth() > 16 ) {
+        let a = 3;
+    }
+
+
+    let treeWidthSpan = (treeWidth * NODE_WIDTH) + ((treeWidth-1) * NODE_SPACE_BETWEEN_X) ;    
     const treeHeightSpan = (treeDepth * NODE_HEIGTH) + ( (treeDepth-1) * NODE_SPACE_BETWEEN_Y)
     const treeInterRowSpace = NODE_HEIGTH + NODE_SPACE_BETWEEN_Y;
-    const marginX = (canvasWidth - treeWidthSpan)/ 2;
-    const marginY = (canvasHeight - treeHeightSpan)/ 2;
     
-    
-    // const allNodesByLevel = treeGraph.getValuesByLevel();
-    // console.log("Values by level:");
-    // console.log(allNodesByLevel);
 
-    // console.log(`Canvas Size = [${canvasWidth},${canvasHeight}]`);
+    // It happens that for tree really unbalanced, the width become very big,
+    // so the division below is a patch, but a more elegant solution would be required here!
+    if (treeWidthSpan > canvasWidth) 
+        treeWidthSpan =  treeWidthSpan/2;
+
+    const marginX = (canvasWidth - treeWidthSpan)/ 2;
+    //const marginY = (canvasHeight - treeHeightSpan)/ 2;       // THis was the orginal code,but that give graph too wide!
+    const marginY = treeInterRowSpace;
     
-    // console.log(`Tree Depth ${treeDepth}`);
-    // console.log(`Tree Width ${treeWidth}`);
-     console.log(`Total Tree size is [${treeWidthSpan},${treeHeightSpan}]`);
+    
+
+    console.log(`Canvas Size = [${canvasWidth}px ,${canvasHeight}px],  Tree Size = [${treeWidth},${treeDepth}]`);    
+    console.log(`%c Render Window width,heigth [${window.innerWidth},${window.innerHeight} ]`, "color:red");
+    console.log(`Total Tree size is [${treeWidthSpan},${treeHeightSpan}]`);
     
 
     // Draw a red box around the tree, to delimit the maximum area to be covered
@@ -264,14 +265,11 @@ export const render = () => {
 
 
     ctx.strokeStyle = "#FBED20";
-    let yPos = marginY;
-    let xStart = marginX;
     let xCenter = marginX + (treeWidthSpan/2); 
-    let xEnd = marginX + treeWidthSpan;
-
+    let yCenter = marginY;
 
     renderNodes (ctx,
-                 xCenter, yPos, 
+                 xCenter, yCenter, 
                  treeWidthSpan,marginY,
                  treeGraph.getRootNode());
 

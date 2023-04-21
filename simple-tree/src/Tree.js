@@ -60,20 +60,20 @@ export class Node {
         return childCount;
     }
 
-     // "Thursday: This function is not completed!!!"
-     getChildLevel(level)   { 
+    //  // "Thursday: This function is not completed!!!"
+    //  getChildLevel(level)   { 
 
-        const currentTreeDepth = this.depth(0);
+    //     const currentTreeDepth = this.depth(0);
 
-        if (level > currentTreeDepth) {
-            const message = "You are asking for a level of child node that is not existing in this graph!!!";
-            console.log(message);
-            throw message;
-        }
+    //     if (level > currentTreeDepth) {
+    //         const message = "You are asking for a level of child node that is not existing in this graph!!!";
+    //         console.log(message);
+    //         throw message;
+    //     }
 
 
-          return this.#leftChild; 
-    }
+    //       return this.#leftChild; 
+    // }
 
 
     insert(newValue) {
@@ -144,33 +144,6 @@ export class Node {
                 return VALUE_NOT_FOUND_CODE;
         }
     }
-
-
-    // // Try to find the deepest level in the sub nodes...
-    // depth(currentDepth) {
-
-
-    //     currentDepth++;
-    //     let leftDepth = currentDepth;
-    //     let rightDepth = currentDepth;
-        
-    //     if ( this.getLeftChild()  !== null) leftDepth = this.getLeftChild().depth(leftDepth);
-    //     if ( this.getRightChild() !== null) leftDepth = this.getRightChild().depth(rightDepth);
-
-    //      //console.log(`Value: ${this.getValue()} at depth ${currentDepth} left is ${this.getLeftChild()}, right is ${this.getRightChild()}, all values are [${leftDepth} , ${currentDepth} , ${rightDepth}]`);
-
-    //     return Math.max(leftDepth, currentDepth, rightDepth)
-
-    // }
-
-    //  // Try to find the total possible width of the node and its sub nodes 
-    //  // Note: The width doesn't imply that there are 'width' nodes at the last layer of the tree,
-    //  //       but  it is a possible maximum width...
-    //  width() {
-
-    //     const depth = this.depth(0);
-    //     return 1 << (depth-1);
-    // }
 
 }
 
@@ -266,7 +239,6 @@ export class TreeGraph {
         //results.push(  { level: currentLevel , values: [ this.getRootNode().getValue()] });
         
         
-        //
         nodesStack.push( { node: this.getRootNode() , level:currentLevel } );
 
         while (nodesStack.length !== 0) {
@@ -398,37 +370,23 @@ export const renderNode = (context, position, size , value) => {
 
     context.textAlign = "center";
     context.textBaseline = "middle"; 
-    context.font = "16px Arial";
+    context.font = "12px Arial";
     const label = value;
 
     context.fillStyle = "black";
     context.fillText(label, position.x+1, position.y+1);
-    // context.fillStyle = "gray";
-    // context.fillText(label, position.x+1, position.y+1);
     context.fillStyle = "#0046BE";
     context.fillText(label, position.x, position.y);
    
 }
 
 export const renderSegment = (context, startPos, endPos, color) => {
-
-
-  
     
     context.beginPath();
     context.moveTo(startPos.x, startPos.y);
     context.lineTo(endPos.x, endPos.y);
-//    context.strokeStyle = "#FF0000";
     context.strokeStyle = color;
-
-
     
     context.stroke(); 
 }
 
-
-
-// Sunday
-// 1 - Add a getNodesByLevel   Done, April 17
-//  This is a variation of the existing getValuesByLevel
-//  Node the getValuesByLevel could call internally the future getNodesByLevel

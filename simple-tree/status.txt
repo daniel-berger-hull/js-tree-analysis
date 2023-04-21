@@ -1,0 +1,20 @@
+
+April 21
+========
+
+  Did merge the coding to have the line of the tree graph (done on Thursday) and the re centering of the canvas (Done on Friday)
+  Some adjustement on the width of the tree been done, as it is sometime becoming too wide...
+
+  To Do:
+    Moving methods:
+
+    Folling method should be done in the TreeGraph
+        * Tree:: getChildLevel(level) 
+        * find(value:int)       --> A node should only care about its value, and not try to search in its children
+        * getChildLevel(level)  --> It been commented out in Node, as it depends on the node.getDepth, which I removed
+                                    A better approach would be to have this method at the tree graph, give a node or value as       
+                                    param, and the TreeGraph would did into the childre till it find or not the node/value
+                                    If it does, then it should return the value (int) of the level where the node is
+                                    i.e:  For a tree      a -->  b  -->   c  (It is more list here), 
+                                          if we give 'c' , then it should return 3 (Third level)
+                                          

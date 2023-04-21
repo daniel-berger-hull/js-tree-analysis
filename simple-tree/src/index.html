@@ -7,11 +7,10 @@
     <title>Testing Tree</title>
 
     <link  rel="stylesheet" href="index.css" >
-
-
  
 </head>
-<body>
+    <body> 
+
     <div class="wrapper">
         <div id="header">
             <div class="header-rotated-section">
@@ -23,13 +22,12 @@
             <div id="center-section">
                <h3>is another text!</h3>
 
-               <canvas id="tree-canvas"  width="1200px" height="500px" >Your browser does not support the HTML5 canvas tag.</canvas>
+               <canvas id="tree-canvas" height="800px">Your browser does not support the HTML5 canvas tag.</canvas>               
             </div>
         </div>
        
     </div>
 
-     <!-- <script type="module"  src="Tree.js"> -->
      <script type="module">
 
         import { init,render } from './index.js';
@@ -37,6 +35,17 @@
 
          init();
          render();
+
+
+         function windowResize() {
+
+            const canvas = document.getElementById("tree-canvas");
+
+            canvas.width = window.innerWidth - 150;
+            render();        
+        }
+
+        window.addEventListener("resize", windowResize );
     </script> 
 
 </body>
