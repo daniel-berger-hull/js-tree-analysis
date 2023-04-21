@@ -5,9 +5,6 @@ export const INVALID_NODE_VALUE =   -1;
 export const VALUE_NOT_FOUND_CODE = -5;
 
 
-// let currentLevel = 0;
-
-
 
 // This class contains and manages the info of a single cell in a Tree Graph...  
 export class Node {
@@ -149,31 +146,31 @@ export class Node {
     }
 
 
-    // Try to find the deepest level in the sub nodes...
-    depth(currentDepth) {
+    // // Try to find the deepest level in the sub nodes...
+    // depth(currentDepth) {
 
 
-        currentDepth++;
-        let leftDepth = currentDepth;
-        let rightDepth = currentDepth;
+    //     currentDepth++;
+    //     let leftDepth = currentDepth;
+    //     let rightDepth = currentDepth;
         
-        if ( this.getLeftChild()  !== null) leftDepth = this.getLeftChild().depth(leftDepth);
-        if ( this.getRightChild() !== null) leftDepth = this.getRightChild().depth(rightDepth);
+    //     if ( this.getLeftChild()  !== null) leftDepth = this.getLeftChild().depth(leftDepth);
+    //     if ( this.getRightChild() !== null) leftDepth = this.getRightChild().depth(rightDepth);
 
-         //console.log(`Value: ${this.getValue()} at depth ${currentDepth} left is ${this.getLeftChild()}, right is ${this.getRightChild()}, all values are [${leftDepth} , ${currentDepth} , ${rightDepth}]`);
+    //      //console.log(`Value: ${this.getValue()} at depth ${currentDepth} left is ${this.getLeftChild()}, right is ${this.getRightChild()}, all values are [${leftDepth} , ${currentDepth} , ${rightDepth}]`);
 
-        return Math.max(leftDepth, currentDepth, rightDepth)
+    //     return Math.max(leftDepth, currentDepth, rightDepth)
 
-    }
+    // }
 
-     // Try to find the total possible width of the node and its sub nodes 
-     // Note: The width doesn't imply that there are 'width' nodes at the last layer of the tree,
-     //       but  it is a possible maximum width...
-     width() {
+    //  // Try to find the total possible width of the node and its sub nodes 
+    //  // Note: The width doesn't imply that there are 'width' nodes at the last layer of the tree,
+    //  //       but  it is a possible maximum width...
+    //  width() {
 
-        const depth = this.depth(0);
-        return 1 << (depth-1);
-    }
+    //     const depth = this.depth(0);
+    //     return 1 << (depth-1);
+    // }
 
 }
 
@@ -309,40 +306,63 @@ export class TreeGraph {
 
     getNodesInOrder() {
 
+        // let currentLevel = 1;
+        let nodesStack = [];
+        let nodeList = [];
+
+        const exploreNodeInOrder = (node  ) => {
+
+            if ( node.getLeftChild() !==  null)    exploreNodeInOrder( node.getLeftChild() );
+            nodeList.push(node);
+            if ( node.getRightChild() !==  null)   exploreNodeInOrder( node.getRightChild() );  
+        }
+
+        exploreNodeInOrder( this.getRootNode() );
+    
+
+       return nodeList;
+    }
+
+    getValuesInOrder() {
+        const nodeListInOrder = this.getNodesInOrder();
+        const values = [];
+
+        nodeListInOrder.forEach( nextNode => {  values.push(nextNode.getValue()) });
+
+        return values;
+    }
+
+
+    getNodesPostOrder() {
 
         let currentLevel = 1;
         let nodesStack = [];
         let nodeList = [];
 
 
-        nodesStack.push( { node: this.getRootNode() , level:currentLevel } );
+    
+        const exploreNodePostOrder = (node  ) => {
 
-        while (nodesStack.length !== 0) {
-
-            let nextItem = nodesStack.pop();
-            let currentNode = nextItem.node;
-            let currentLevel = nextItem.level;
-
-            //Must keep track to how low we go in the tree, as it will represent the depth of this tree...
-            if (currentLevel > this.#depth)   this.#depth = currentLevel;
-
-            // Stacking the right side first, will make the exploration of the tree more natural
-            // As the left side will be poped first, and we will exhaust all the left side
-            // and then, pop the right side and to the same...
-            if ( currentNode.getRightChild() !==  null)  
-                nodesStack.push(  { node: currentNode.getRightChild() , level: currentLevel+1 }   );
-
-            if ( currentNode.getLeftChild() !==  null)  
-                nodesStack.push( { node: currentNode.getLeftChild() , level: currentLevel+1 } );
+            if ( node.getLeftChild() !==  null)    exploreNodePostOrder( node.getLeftChild() );
+            if ( node.getRightChild() !==  null)   exploreNodePostOrder( node.getRightChild() );  
+            nodeList.push(node);
         }
 
+        exploreNodePostOrder( this.getRootNode() );
 
        return nodeList;
     }
 
-    // following will leverage equivalent functions of a Node Tree
-    // get All Values
-    //displayNodes
+    getValuesPostOrder() {
+        const nodeListPostOrder = this.getNodesPostOrder();
+        const values = [];
+
+        nodeListPostOrder.forEach( nextNode => {  values.push(nextNode.getValue()) });
+
+        return values;
+    }
+
+
 
 }
 
@@ -363,34 +383,10 @@ export const displayNodes = (node) => {
 }
 
 
-export const displayNodesInOrder = (node) => {
-
-    if (node === null || typeof node === 'undefined')  return;
-
-
-    if ( node.getLeftChild() !==  null)  displayNodesInOrder( node.getLeftChild() );
-    console.log(node.getValue());    
-    if ( node.getRightChild() !==  null)  displayNodesInOrder( node.getRightChild() );
-}
-
-export const displayNodesPostOrder = (node) => {
-
-    if (node === null || typeof node === 'undefined')  return;
-
-
-    if ( node.getLeftChild() !==  null)  displayNodesPostOrder( node.getLeftChild() );
-    if ( node.getRightChild() !==  null)  displayNodesPostOrder( node.getRightChild() );
-    console.log(node.getValue());    
-
-}
-
-
 
 
 export const renderNode = (context, position, size , value) => {
 
-    console.log("Node Value is " + value);
-    
 
     context.strokeStyle = "#FBED20";
     context.beginPath();
@@ -414,9 +410,25 @@ export const renderNode = (context, position, size , value) => {
    
 }
 
+export const renderSegment = (context, startPos, endPos, color) => {
+
+
+  
+    
+    context.beginPath();
+    context.moveTo(startPos.x, startPos.y);
+    context.lineTo(endPos.x, endPos.y);
+//    context.strokeStyle = "#FF0000";
+    context.strokeStyle = color;
+
+
+    
+    context.stroke(); 
+}
+
 
 
 // Sunday
-// 1 - Add a getNodesByLevel
+// 1 - Add a getNodesByLevel   Done, April 17
 //  This is a variation of the existing getValuesByLevel
 //  Node the getValuesByLevel could call internally the future getNodesByLevel

@@ -1,4 +1,8 @@
-import { Node , TreeGraph, renderNode , displayNodes, displayNodesInOrder , displayNodesPostOrder} from './Tree.js';
+import { Node , TreeGraph, renderNode , renderSegment, displayNodes } from './Tree.js';
+
+
+
+
 
 
 const NODE_WIDTH            =   50;
@@ -11,17 +15,22 @@ const NODE_SPACE_BETWEEN_Y  =   40;
 let treeGraph =  {};
 let nodesStack = [];
 
+let graphNodeLocations = [];
+let graphSegmentLocations = [];
+
 
 // To Do: 
-//  1- Add calculate general param function
+//  1- Add calculate general param function  Done, April 18
 //    Transfer all the calculation in the beginning of the render function into its own calculateRender...  function
 //    And use a global JSON object to have them accessible to all other functions of this file 
 //
-//  2 - Render precalculation
+//  2 - Render precalculation       
 //     I can't draw line between node, as line has to be drawn first, under the circle of the node
 //     And currently, that mean that I would know the coordinate of where node will be drawn 
-
-
+//     Should get 
+//   
+//   3 - Render radial tree
+//   Check the document https://cs.brown.edu/people/rtamassi/gdhandbook/chapters/trees.pdf for details...
 
 
 export const init = () => {
@@ -33,28 +42,23 @@ export const init = () => {
     treeGraph.insert(50);
 
 
-    console.log('Init: Create Random Values for Nodes...');
-    // for (let i=0;i<8;i++) {
-    //     const newValue = Math.round( Math.random() * 99) + 1;
-    //     allNodes.push(newValue);
-    // }
+   // console.log('Init: Create Random Values for Nodes...');
+    for (let i=0;i<8;i++) {
+        const newValue = Math.round( Math.random() * 99) + 1;
+        allNodes.push(newValue);
+    }
 
-    allNodes.push(25);
-    allNodes.push(75);
-    allNodes.push(15);
-    allNodes.push(35);
-    allNodes.push(60);
-    allNodes.push(90);
-    allNodes.push(7);
-    allNodes.push(20);
-    allNodes.push(30);
-    allNodes.push(40);
+    // allNodes.push(25);
+    // allNodes.push(75);
+    // allNodes.push(15);
+    // allNodes.push(35);
+    // allNodes.push(60);
+    // allNodes.push(90);
+    // allNodes.push(7);
+    // allNodes.push(20);
+    // allNodes.push(30);
+    // allNodes.push(40);
     
-
-    
-
-
-
     console.log("Init: Initial Random values:");
     console.log( allNodes );
 
@@ -67,16 +71,12 @@ export const init = () => {
     console.log(`Init: Tree Depth = ${treeGraph.getDepth()} , Width = ${treeGraph.getWidth()}`);
 
 
-    console.log(`Init: Display Nodes In Order`);
-    displayNodesInOrder(treeGraph.getRootNode());
-    console.log(`Init: Display Nodes Post Order`);
-    displayNodesPostOrder(treeGraph.getRootNode());
+    console.log(`Init: Display Nodes In Order  (treeGraph.getValuesInOrder())`);
+    console.log( treeGraph.getValuesInOrder() );
 
+    console.log(`%cInit: Display Nodes In Order  (treeGraph.getValuesPostOrder())`, "color:red");
+    console.log( treeGraph.getValuesPostOrder() );
 
-    
-
-
-    
 }
 
 
@@ -104,6 +104,13 @@ const stack1Children = (node, nodeCoords) => {
                         dx: subXSpan,
                         dy: subYSpan,
                         node: childNode });
+
+
+
+    graphSegmentLocations.push( { xStart: nodeCoords.x, 
+                                  yStart:  nodeCoords.y, 
+                                  xEnd: xChild,
+                                  yEnd: yChild } );
 
 }
 
@@ -140,12 +147,26 @@ const stack2Children = (node, nodeCoords) => {
                         dx:  subXSpan,
                         dy: subYSpan,
                         node: node.getLeftChild() });
+
+
+    graphSegmentLocations.push( {   xStart: nodeCoords.x, 
+                                    yStart:  nodeCoords.y, 
+                                    xEnd: xLeftChild,
+                                    yEnd: yLeftChild } );
+    graphSegmentLocations.push( {   xStart: nodeCoords.x, 
+                                    yStart:  nodeCoords.y, 
+                                    xEnd: xRightChild,
+                                    yEnd: yRightChild } );
+    
+
 }
 
 const renderNodes = (context,xCenter,yPos,xSpan,yIncrement,nodeToDraw) => {
 
 
     nodesStack = [];
+    graphNodeLocations = [];
+    graphSegmentLocations = [];
 
     nodesStack.push( {   x:  xCenter,
                          y:  yPos,
@@ -159,9 +180,10 @@ const renderNodes = (context,xCenter,yPos,xSpan,yIncrement,nodeToDraw) => {
         let nextItem = nodesStack.pop();
         let currentNode = nextItem.node;
         
-
+        
         //Start by drawing the node itself
-        renderNode(context, { x: nextItem.x, y: nextItem.y }, 15 , currentNode.getValue());
+        //renderNode(context, { x: nextItem.x, y: nextItem.y }, 15 , currentNode.getValue());
+        graphNodeLocations.push( { x: nextItem.x, y: nextItem.y, value: currentNode.getValue() });
         
          // Note: having dedicated methods like stack1Children & stack2Children doesn't look go
          //       BUT it is the only way for now I can handle the node with one child and have them vertical 
@@ -186,6 +208,20 @@ const renderNodes = (context,xCenter,yPos,xSpan,yIncrement,nodeToDraw) => {
 
     }
 
+
+
+
+    graphSegmentLocations.forEach( segment => { renderSegment(context, 
+                                                             { x: segment.xStart, y: segment.yStart } , 
+                                                             { x: segment.xEnd,   y: segment.yEnd } , "#00FF00") 
+
+    });
+
+
+     graphNodeLocations.forEach( node => {
+         renderNode(context, { x: node.x, y: node.y }, 15 , node.value);
+     });
+    
 }
 
 
@@ -207,16 +243,15 @@ export const render = () => {
     const marginY = (canvasHeight - treeHeightSpan)/ 2;
     
     
-    const allNodesByLevel = treeGraph.getValuesByLevel();
-    console.log("Values by level:");
-    console.log(allNodesByLevel);
+    // const allNodesByLevel = treeGraph.getValuesByLevel();
+    // console.log("Values by level:");
+    // console.log(allNodesByLevel);
 
-
-    console.log(`Canvas Size = [${canvasWidth},${canvasHeight}]`);
+    // console.log(`Canvas Size = [${canvasWidth},${canvasHeight}]`);
     
-    console.log(`Tree Depth ${treeDepth}`);
-    console.log(`Tree Width ${treeWidth}`);
-    console.log(`Total Tree size is [${treeWidthSpan},${treeHeightSpan}]`);
+    // console.log(`Tree Depth ${treeDepth}`);
+    // console.log(`Tree Width ${treeWidth}`);
+     console.log(`Total Tree size is [${treeWidthSpan},${treeHeightSpan}]`);
     
 
     // Draw a red box around the tree, to delimit the maximum area to be covered
