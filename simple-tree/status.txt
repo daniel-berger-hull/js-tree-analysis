@@ -1,3 +1,16 @@
+Arpril 22
+=========
+
+  Tried to find an alternative to the existing rendering algo, based on the size of left and right subtree at a node.
+  It required to alter the Node class, and add an x and y field, which is not good design.
+  But it is a promising path...
+
+  the TreeGraphRender.js, in the method draw() as a temporary drawing of the new algo, to give an idea 
+   --> It should be recoded to be cleaner and part of the class (not a patch at the end of the draw method like it is)
+   
+   Read the article here:    https://rachel53461.wordpress.com/2014/04/20/algorithm-for-drawing-trees/,
+   as it has a more evoluated version
+   
 
 April 21
 ========
@@ -19,3 +32,8 @@ April 21
                                     i.e:  For a tree      a -->  b  -->   c  (It is more list here), 
                                           if we give 'c' , then it should return 3 (Third level)
                                           
+
+
+  TreeGraph    (Has Data)
+      --> TreeRender    (Has general job of planning and big level drawing)
+         --> TreeRenderingAlgo  (Receive Data, general parameter on size of canvas, and return a tree with exact coords where to draw nodes)
