@@ -65,7 +65,7 @@ export const init = () => {
 
 
     treeGraph.recalculate();
-    console.log(`Init: Tree Depth = ${treeGraph.getDepth()} , Width = ${treeGraph.getWidth()}`);
+    // console.log(`Init: Tree Depth = ${treeGraph.getDepth()} , Width = ${treeGraph.getWidth()}`);
 
 //      console.log(`Init: Display Nodes...`);
 //      console.log( treeGraph.displayNodes() );
@@ -78,6 +78,8 @@ export const render = () => {
     var canvas = document.getElementById("tree-canvas");
 
     const treeRender = new TreeGraphRender(canvas,treeGraph);
+
+    treeRender.displaySepcs();
 
     treeRender.draw();
 

@@ -216,22 +216,6 @@ export class TreeGraph {
     }
 
 
- //  // "Thursday: This function is not completed!!!"
-    //  getChildLevel(level)   { 
-
-    //     const currentTreeDepth = this.depth(0);
-
-    //     if (level > currentTreeDepth) {
-    //         const message = "You are asking for a level of child node that is not existing in this graph!!!";
-    //         console.log(message);
-    //         throw message;
-    //     }
-
-
-    //       return this.#leftChild; 
-    // }
-
-
 
     //This will return all the nodes, grouped by layer where they appear in the Tree
     // i.e:  Level 1 is root, Level 2 is A,B, Level 3 is A1,A2,B1,B2, etc...
@@ -360,39 +344,4 @@ export class TreeGraph {
 
 }
 
-
-
-
-// export const renderNode = (context, position, size , value) => {
-
-
-//     context.strokeStyle = "#FBED20";
-//     context.beginPath();
-//     context.arc(position.x, position.y, size, 0, 2 * Math.PI);
-//     context.fillStyle = 'white';
-//     context.fill();
-//     context.lineWidth = 2;
-//     context.stroke();
-
-//     context.textAlign = "center";
-//     context.textBaseline = "middle"; 
-//     context.font = "12px Arial";
-//     const label = value;
-
-//     context.fillStyle = "black";
-//     context.fillText(label, position.x+1, position.y+1);
-//     context.fillStyle = "#0046BE";
-//     context.fillText(label, position.x, position.y);
-   
-// }
-
-// export const renderSegment = (context, startPos, endPos, color) => {
-    
-//     context.beginPath();
-//     context.moveTo(startPos.x, startPos.y);
-//     context.lineTo(endPos.x, endPos.y);
-//     context.strokeStyle = color;
-    
-//     context.stroke(); 
-// }
 
