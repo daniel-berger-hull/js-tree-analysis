@@ -50,6 +50,8 @@ export const init = () => {
 
     // Uncomment this line to have a very symetric Tree, for testing it is best...
     // allNodes.push(25,75,15,35,60,90,7,20,30,40);
+    // allNodes.push(25,75,35,60,90,30,70,80,95,28);
+    
 
     console.log("Init: Initial Random values:");
     console.log( allNodes );
@@ -82,6 +84,12 @@ export const render = () => {
     treeRender.displaySepcs();
 
     treeRender.draw();
+
+   
+
+    
+
+  
 
  }
 

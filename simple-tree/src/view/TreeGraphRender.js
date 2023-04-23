@@ -1,4 +1,5 @@
 import { BasicRenderingAlgo } from './BasicRenderingAlgo.js';
+import { ReingoldRenderingAlgo } from './ReingoldRenderingAlgo.js';
 
 
 import {  NODE_WIDTH, NODE_HEIGTH, 
@@ -48,7 +49,10 @@ export class TreeGraphRender {
         const canvasSpecs = {  width: this.#canvas.width,
                                height: this.#canvas.height };
         
-        this.#renderingAlgo = new  BasicRenderingAlgo(this.#treeGraph,canvasSpecs);
+//        this.#renderingAlgo = new  BasicRenderingAlgo(this.#treeGraph,canvasSpecs);
+        this.#renderingAlgo = new  ReingoldRenderingAlgo(this.#treeGraph,canvasSpecs);
+
+        
 
 
         // Note: does the rest of the code in this #init() is really necessary? A lot of this is done in Rendering Algo,which should be better placed to make the calculation..
@@ -85,7 +89,9 @@ export class TreeGraphRender {
     
     renderTreeGraph (context,xCenter,yPos)  {
         
-        this.#renderingAlgo.renderNodes (xCenter,yPos);
+        this.#renderingAlgo.calculateNodesLocations (xCenter,yPos);
+
+
         const resultnodes     = this.#renderingAlgo.getRenderNodes();
         const resultSegments  = this.#renderingAlgo.getRenderSegments();
 
@@ -165,6 +171,35 @@ export class TreeGraphRender {
         let yCenter = this.#marginY;
 
         this.renderTreeGraph( ctx, xCenter, yCenter );
-    
+
+
+
+        //////////////////////////////////////////////////////
+
+        const x = this.#treeGraph.getRootNode().getX();
+        const y = this.#treeGraph.getRootNode().getY();
+        
+        console.log(`%c After Reingo Algo, node is ${x}, ${y}`, "color:red");
+
+
+        
+        const drawANode = (context,nextNode) => { 
+
+
+            const nodePos = {  x : this.#marginX +   (nextNode.getX()  *  30),
+                               y : (nextNode.getY()  *  30) + 350 };
+            
+               this.renderNode(ctx, nodePos, 10 , nextNode.getValue()); 
+
+
+               if ( nextNode.getLeftChild() !==  null)     drawANode(context,nextNode.getLeftChild());
+               if ( nextNode.getRightChild() !==  null)    drawANode(context,nextNode.getRightChild());
+        }
+
+        drawANode(ctx,this.#treeGraph.getRootNode());
+
+        ////////////////////////////////////////////////////////////
+
+       
     }
 }

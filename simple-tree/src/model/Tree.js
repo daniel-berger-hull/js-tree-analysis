@@ -13,6 +13,11 @@ export class Node {
     #leftChild;
     #rightChild;
 
+    #x;
+    #y;
+    #modX;
+
+
     
     constructor(value) {
 
@@ -60,6 +65,27 @@ export class Node {
         return childCount;
     }
 
+    getTreeCount() {
+        let allChildCount = 1;
+
+        if ( this.getLeftChild()  !==  null )   allChildCount +=  this.getLeftChild().getTreeCount(); 
+        if ( this.getRightChild() !==  null )   allChildCount +=  this.getRightChild().getTreeCount(); 
+
+        return allChildCount;    // Plus one, as you have to count yourself as member of this Sub Tree..
+    }
+
+
+    getX()               { return this.#x;    }
+    getY()               { return this.#y;    }
+    getModX()            { return this.#modX; }
+
+    
+    setX(newX)           { this.#x = newX;       } 
+    setY(newY)           { this.#y = newY;       }
+    setModX(newModX)     { this.#modX = newModX; }
+    
+    
+    
 
     insert(newValue) {
 
