@@ -9,9 +9,10 @@ April 21
     Moving methods:
 
     Folling method should be done in the TreeGraph
-        * Tree:: getChildLevel(level) 
-        * find(value:int)       --> A node should only care about its value, and not try to search in its children
-        * getChildLevel(level)  --> It been commented out in Node, as it depends on the node.getDepth, which I removed
+        * Tree:: getChildLevel(level) *** Update: Removed April 22
+        * find(value:int)       --> A node should only care about its value, and not try to search in its children    *** Update: Done April 22
+          
+        * getChildLevel(level)  --> It been commented out in Node, as it depends on the node.getDepth, which I removed     
                                     A better approach would be to have this method at the tree graph, give a node or value as       
                                     param, and the TreeGraph would did into the childre till it find or not the node/value
                                     If it does, then it should return the value (int) of the level where the node is

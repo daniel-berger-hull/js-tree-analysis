@@ -60,21 +60,6 @@ export class Node {
         return childCount;
     }
 
-    //  // "Thursday: This function is not completed!!!"
-    //  getChildLevel(level)   { 
-
-    //     const currentTreeDepth = this.depth(0);
-
-    //     if (level > currentTreeDepth) {
-    //         const message = "You are asking for a level of child node that is not existing in this graph!!!";
-    //         console.log(message);
-    //         throw message;
-    //     }
-
-
-    //       return this.#leftChild; 
-    // }
-
 
     insert(newValue) {
 
@@ -125,25 +110,6 @@ export class Node {
           return true;
     }
 
-    find(value) {
-
-        if (this.getValue() === value)  return value;
-
-        if (value < this.getValue()) {
-
-            if ( this.#leftChild !== null)
-                return this.#leftChild.find(value);
-            else
-                return VALUE_NOT_FOUND_CODE;
-
-        }  else  {
-        
-            if ( this.#rightChild !== null)
-                return this.#rightChild.find(value);
-            else
-                return VALUE_NOT_FOUND_CODE;
-        }
-    }
 
 }
 
@@ -188,6 +154,30 @@ export class TreeGraph {
         return newValue;
     }
 
+    // If found, Will return a node with value searched for ...
+    find(value) {
+
+        const findInChild = ( node, value ) => {
+
+            if ( node.getValue() === value)   return node;
+
+            let result;
+            if ( node.getLeftChild() !==  null) {
+                result = findInChild( node.getLeftChild()  , value );
+                if (result !== null) return result;
+            }   
+            if ( node.getRightChild() !==  null)  {
+                result = findInChild( node.getRightChild()  , value );
+                if (result !== null) return result;
+            }   
+            
+            return null;
+        }
+
+
+        return findInChild( this.getRootNode() , value );
+    }
+
 
 
     // this method should be called after any insert or delete on the TreeGraph, as it finds the depth and width,
@@ -226,19 +216,32 @@ export class TreeGraph {
     }
 
 
+ //  // "Thursday: This function is not completed!!!"
+    //  getChildLevel(level)   { 
+
+    //     const currentTreeDepth = this.depth(0);
+
+    //     if (level > currentTreeDepth) {
+    //         const message = "You are asking for a level of child node that is not existing in this graph!!!";
+    //         console.log(message);
+    //         throw message;
+    //     }
+
+
+    //       return this.#leftChild; 
+    // }
+
+
+
     //This will return all the nodes, grouped by layer where they appear in the Tree
     // i.e:  Level 1 is root, Level 2 is A,B, Level 3 is A1,A2,B1,B2, etc...
     getValuesByLevel() {
 
         let currentLevel = 1;
         let nodesStack = [];
-
         let results = [];
-        //The first level is a given as it is the root at level 1...
-        // results.push(  [ this.getRootNode().getValue()] );
-        //results.push(  { level: currentLevel , values: [ this.getRootNode().getValue()] });
-        
-        
+
+        //The first level is a given as it is the root at level 1...        
         nodesStack.push( { node: this.getRootNode() , level:currentLevel } );
 
         while (nodesStack.length !== 0) {
@@ -270,15 +273,11 @@ export class TreeGraph {
 
         }
 
-
         return results;
-    
-
     }
 
     getNodesInOrder() {
 
-        // let currentLevel = 1;
         let nodesStack = [];
         let nodeList = [];
 
@@ -335,58 +334,65 @@ export class TreeGraph {
     }
 
 
+    displayNodes () {
+
+        let  currentLevel = 0;
+
+
+
+        const _displayNodes = (node) => {
+
+            if (node === null || typeof node === 'undefined')  return;
+
+            currentLevel++;
+
+            if ( node.getLeftChild() !==  null)    _displayNodes( node.getLeftChild() );
+            console.log("Level " + currentLevel + " --> "  +  node.getValue());
+            if ( node.getRightChild() !==  null)   _displayNodes( node.getRightChild() );  
+
+            currentLevel--;
+        }
+
+        _displayNodes( this.getRootNode() );
+    }
+
+
 
 }
 
-let  currentLevel = 0;
-// Utility function to identify the node's and it children values..
-export const displayNodes = (node) => {
-
-    if (node === null || typeof node === 'undefined')  return;
-
-
-    currentLevel++;
-
-    if ( node.getLeftChild() !==  null)  displayNodes( node.getLeftChild() );
-    console.log("Level " + currentLevel + " --> "  +  node.getValue());
-    if ( node.getRightChild() !==  null)  displayNodes( node.getRightChild() );
-
-    currentLevel--;
-}
 
 
 
+// export const renderNode = (context, position, size , value) => {
 
-export const renderNode = (context, position, size , value) => {
 
+//     context.strokeStyle = "#FBED20";
+//     context.beginPath();
+//     context.arc(position.x, position.y, size, 0, 2 * Math.PI);
+//     context.fillStyle = 'white';
+//     context.fill();
+//     context.lineWidth = 2;
+//     context.stroke();
 
-    context.strokeStyle = "#FBED20";
-    context.beginPath();
-    context.arc(position.x, position.y, size, 0, 2 * Math.PI);
-    context.fillStyle = 'white';
-    context.fill();
-    context.lineWidth = 2;
-    context.stroke();
+//     context.textAlign = "center";
+//     context.textBaseline = "middle"; 
+//     context.font = "12px Arial";
+//     const label = value;
 
-    context.textAlign = "center";
-    context.textBaseline = "middle"; 
-    context.font = "12px Arial";
-    const label = value;
-
-    context.fillStyle = "black";
-    context.fillText(label, position.x+1, position.y+1);
-    context.fillStyle = "#0046BE";
-    context.fillText(label, position.x, position.y);
+//     context.fillStyle = "black";
+//     context.fillText(label, position.x+1, position.y+1);
+//     context.fillStyle = "#0046BE";
+//     context.fillText(label, position.x, position.y);
    
-}
+// }
 
-export const renderSegment = (context, startPos, endPos, color) => {
+// export const renderSegment = (context, startPos, endPos, color) => {
     
-    context.beginPath();
-    context.moveTo(startPos.x, startPos.y);
-    context.lineTo(endPos.x, endPos.y);
-    context.strokeStyle = color;
+//     context.beginPath();
+//     context.moveTo(startPos.x, startPos.y);
+//     context.lineTo(endPos.x, endPos.y);
+//     context.strokeStyle = color;
     
-    context.stroke(); 
-}
+//     context.stroke(); 
+// }
 
