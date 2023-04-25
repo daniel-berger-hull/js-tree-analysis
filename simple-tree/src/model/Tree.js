@@ -12,7 +12,7 @@ export class Node {
     #value;
     #leftChild;
     #rightChild;
-
+  
     #x;
     #y;
     #modX;
@@ -119,6 +119,44 @@ export class Node {
         }
            
         //Implicit here, children with value equal to this node value are put to the right of this value...
+    }
+
+
+    getSubTreeWidth() {
+
+      
+        const getSubWidth = (childNode) => {
+
+            const childCount = childNode.getChildrenCount();
+            let   leftWidth = 0;
+            let   rigthWith = 0;
+
+
+            //The leafs of the tree have only themselve, or a width of 1 in other words...
+            if ( childCount === 0)  return 1;
+
+            if ( childNode.getLeftChild()  !==  null )   leftWidth = getSubWidth(childNode.getLeftChild());
+            if ( childNode.getRightChild() !==  null )   rigthWith = getSubWidth(childNode.getRightChild());
+        
+            // then the simplest case is that one side an empty subtree (then count of 0), and the other has only one leaf (then count of 1), then it is a vertical subtree, widht is 1 
+            if ( (leftWidth+rigthWith) === 1)  return 1;
+
+
+            // The case of unbalanced subtrees: One if empty, while the other has a realy subtree (more than one leaf). 
+            if ( (leftWidth !==0) && (rigthWith === 0) )  return leftWidth;
+            if ( (leftWidth ===0) && (rigthWith !== 0) )  return rigthWith;
+            
+
+
+
+            //Otherwise, both subtrees have a width (even a leaf on each side is chaning the situation here).
+            //You need then to return the sum of both sub trees PLUS the parent node, since this one need to be in the center, so it takes space
+            return leftWidth + 1 + rigthWith;
+        }
+
+        return getSubWidth(this);
+
+           
     }
 
     isValidValue(value) {
