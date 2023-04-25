@@ -6,15 +6,16 @@ import {  NODE_WIDTH, NODE_HEIGTH,
           NODE_SPACE_BETWEEN_X,NODE_SPACE_BETWEEN_Y,
           NODE_RADIUS } from './RenderConstants.js';
 
-
+         
 
 export class TreeGraphRender {
 
 
     #canvas;   
     #treeGraph;
-    #renderingAlgo;
-
+    #reingoldRenderingAlgo;
+    #basicRenderAlgo;
+    
     //Note: Those private fields are they really needed?  The rendering Algo is doing the exact same calculations..
     #treeWidthSpan;
     #treeHeightSpan;
@@ -49,12 +50,10 @@ export class TreeGraphRender {
         const canvasSpecs = {  width: this.#canvas.width,
                                height: this.#canvas.height };
         
-//        this.#renderingAlgo = new  BasicRenderingAlgo(this.#treeGraph,canvasSpecs);
-        this.#renderingAlgo = new  ReingoldRenderingAlgo(this.#treeGraph,canvasSpecs);
+        this.#reingoldRenderingAlgo = new  ReingoldRenderingAlgo(this.#treeGraph,canvasSpecs);
+        this.#basicRenderAlgo = new  BasicRenderingAlgo(this.#treeGraph,canvasSpecs);
 
-        
-
-
+    
         // Note: does the rest of the code in this #init() is really necessary? A lot of this is done in Rendering Algo,which should be better placed to make the calculation..
         const canvasWidth  = this.#canvas.width;
         const canvasHeight = this.#canvas.height;
@@ -87,13 +86,27 @@ export class TreeGraphRender {
     }
 
     
-    renderTreeGraph (context,xCenter,yPos)  {
-        
-        this.#renderingAlgo.calculateNodesLocations (xCenter,yPos);
+    //This method demo the rendering of the basic Rendering algo, with is top-down algo, who calculate based on the center position of a sub tree, to place it roots there.
+    // and the algo goes recursively to the children using the same principe...
+    renderTreeGraphBasic (context,xCenter,yPos)  {
+
+        context.fillStyle = "#FBED20;";
+        context.lineWidth = "1";
+        context.strokeStyle = "#FF0000";
+        context.beginPath();
+        context.rect(this.#marginX, 
+                 this.#marginY, 
+                 this.#treeWidthSpan, 
+                 this.#treeHeightSpan);
+        context.stroke();
+    
+    
+        this.#basicRenderAlgo.calculateNodesLocations (xCenter,yPos);
 
 
-        const resultnodes     = this.#renderingAlgo.getRenderNodes();
-        const resultSegments  = this.#renderingAlgo.getRenderSegments();
+
+        const resultnodes     = this.#basicRenderAlgo.getRenderNodes();
+        const resultSegments  = this.#basicRenderAlgo.getRenderSegments();
 
         resultSegments.forEach( segment => { this.renderSegment(  context, 
                                                                 { x: segment.xStart, y: segment.yStart } , 
@@ -107,9 +120,44 @@ export class TreeGraphRender {
         });
 
 
-        }
+    }
+
+    renderTreeGraphReingold( context, xCenter, yCenter ) {
 
     
+         this.#reingoldRenderingAlgo.calculateNodesLocations();
+         
+         const x = this.#treeGraph.getRootNode().getX();
+         const y = this.#treeGraph.getRootNode().getY();
+         
+         console.log(`%c After Reingo Algo, node is ${x}, ${y}`, "color:red");
+ 
+ 
+
+         const resultSegments  = this.#reingoldRenderingAlgo.getRenderSegments();
+
+         resultSegments.forEach( segment => { this.renderSegment(  context, 
+                                                                 { x: 100 + (segment.xStart*40), 
+                                                                   y: 350 + (segment.yStart*30) } , 
+                                                                 { x: 100 + (segment.xEnd  *40),   
+                                                                   y: 350 + (segment.yEnd  *30)} , 
+                                                                   "#FF0000")   });
+         
+         const drawNode = (context,nextNode) => { 
+  
+             const nodePos = {  x : 100 +   (nextNode.getX() * 40),
+                                y : 350 + (nextNode.getY() * 30) };
+  
+             
+                this.renderNode(context, nodePos, 10 , nextNode.getValue()); 
+ 
+ 
+                if ( nextNode.getLeftChild() !==  null)     drawNode(context,nextNode.getLeftChild());
+                if ( nextNode.getRightChild() !==  null)    drawNode(context,nextNode.getRightChild());
+         }
+ 
+         drawNode(context,this.#treeGraph.getRootNode());
+}    
     renderNode(context, position, size , value) {
 
         context.strokeStyle = "#FBED20";
@@ -154,52 +202,12 @@ export class TreeGraphRender {
 
         var ctx = this.#canvas.getContext("2d");
 
-
-        ctx.fillStyle = "#FBED20;";
-        ctx.lineWidth = "1";
-        ctx.strokeStyle = "#FF0000";
-        ctx.beginPath();
-        ctx.rect(this.#marginX, 
-                 this.#marginY, 
-                 this.#treeWidthSpan, 
-                 this.#treeHeightSpan);
-        ctx.stroke();
-    
-    
-        ctx.strokeStyle = "#FBED20";
         let xCenter = this.#marginX + (this.#treeWidthSpan/2); 
         let yCenter = this.#marginY;
 
-        this.renderTreeGraph( ctx, xCenter, yCenter );
+        this.renderTreeGraphBasic( ctx, xCenter, yCenter );
+        this.renderTreeGraphReingold( ctx, xCenter, yCenter );
 
-
-
-        //////////////////////////////////////////////////////
-
-        const x = this.#treeGraph.getRootNode().getX();
-        const y = this.#treeGraph.getRootNode().getY();
-        
-        console.log(`%c After Reingo Algo, node is ${x}, ${y}`, "color:red");
-
-
-        
-        const drawANode = (context,nextNode) => { 
-
-
-            const nodePos = {  x : this.#marginX +   (nextNode.getX()  *  30),
-                               y : (nextNode.getY()  *  30) + 350 };
-            
-               this.renderNode(ctx, nodePos, 10 , nextNode.getValue()); 
-
-
-               if ( nextNode.getLeftChild() !==  null)     drawANode(context,nextNode.getLeftChild());
-               if ( nextNode.getRightChild() !==  null)    drawANode(context,nextNode.getRightChild());
-        }
-
-        drawANode(ctx,this.#treeGraph.getRootNode());
-
-        ////////////////////////////////////////////////////////////
-
-       
+     
     }
 }

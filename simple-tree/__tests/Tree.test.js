@@ -1,4 +1,4 @@
-const { Node } = require('../src/Tree.js');
+const { Node } = require('../src/model/Tree.js');
 
 
 

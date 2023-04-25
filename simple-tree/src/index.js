@@ -43,7 +43,7 @@ export const init = () => {
 
 
    // 'Init: Create Random Values for Nodes...
-    for (let i=0;i<16;i++) {
+    for (let i=0;i<12;i++) {
         const newValue = Math.round( Math.random() * 99) + 1;
         allNodes.push(newValue);
     }

@@ -127,6 +127,8 @@ export class BasicRenderingAlgo {
 
     calculateNodesLocations (xCenter,yPos)  {
 
+
+        console.log("%c this is the basic Rendering Algo","color:red");
         this.#nodesInputStack   = [];
         this.#graphNodes        = [];
         this.#graphSegments     = [];
@@ -149,10 +151,10 @@ export class BasicRenderingAlgo {
 
 
          this.#nodesInputStack.push( {  x:  xCenter,
-                                  y:  yPos,
-                                  dx:  treeWidthSpan,
-                                  dy:   NODE_SPACE_BETWEEN_Y,
-                                  node: this.#treeModel.getRootNode() });
+                                        y:  yPos,
+                                        dx:  treeWidthSpan,
+                                        dy:   NODE_SPACE_BETWEEN_Y,
+                                        node: this.#treeModel.getRootNode() });
 
 
         while (this.#nodesInputStack.length !== 0) {
