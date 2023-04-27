@@ -4,6 +4,9 @@ export const INVALID_NODE_VALUE =   -1;
 
 export const VALUE_NOT_FOUND_CODE = -5;
 
+export const NODE_HEIGTH_NOT_KNOWN  = -1;
+
+
 
 
 // This class contains and manages the info of a single cell in a Tree Graph...  
@@ -12,6 +15,7 @@ export class Node {
     #value;
     #leftChild;
     #rightChild;
+    #height;
   
     #x;
     #y;
@@ -24,8 +28,9 @@ export class Node {
         if ( this.isValidValue(value) )  this.#value = value;
         else this.#value = INVALID_NODE_VALUE;
 
-        this.#leftChild = null;
+        this.#leftChild  = null;
         this.#rightChild = null;
+        this.#height     = NODE_HEIGTH_NOT_KNOWN;
     }
 
     getValue() {
@@ -77,12 +82,9 @@ export class Node {
 
     getX()               { return this.#x;    }
     getY()               { return this.#y;    }
-    // getModX()            { return this.#modX; }
-
     
     setX(newX)           { this.#x = newX;       } 
     setY(newY)           { this.#y = newY;       }
-    // setModX(newModX)     { this.#modX = newModX; }
     
     
     
@@ -132,14 +134,17 @@ export class Node {
 
 
         //First case Leaf: has not left or right subtree, only itself so minimal depth is one
-        if ( (leftDepth === 0) && (rigthDepth === 0))  return 1;
+        if ( (leftDepth === 0) && (rigthDepth === 0))    this.#height = 1;
+        
+       
 
         // Otherwise, return the highest number of any side, PLUS this parent node, hince the + 1 at the end
-        if ( leftDepth > rigthDepth )
-              return leftDepth + 1;
+        else if ( leftDepth > rigthDepth )
+            this.#height =  leftDepth + 1;
         else
-              return rigthDepth + 1;
+            this.#height =  rigthDepth + 1;
 
+        return  this.#height;
  }
 
 
