@@ -15,7 +15,7 @@ export class Node {
   
     #x;
     #y;
-    #modX;
+    // #modX;
 
 
     
@@ -77,12 +77,12 @@ export class Node {
 
     getX()               { return this.#x;    }
     getY()               { return this.#y;    }
-    getModX()            { return this.#modX; }
+    // getModX()            { return this.#modX; }
 
     
     setX(newX)           { this.#x = newX;       } 
     setY(newY)           { this.#y = newY;       }
-    setModX(newModX)     { this.#modX = newModX; }
+    // setModX(newModX)     { this.#modX = newModX; }
     
     
     
@@ -120,6 +120,27 @@ export class Node {
            
         //Implicit here, children with value equal to this node value are put to the right of this value...
     }
+
+    getDepth() {
+
+        let leftDepth  = 0;
+        let rigthDepth = 0;
+        
+
+        if ( this.getLeftChild()  !==  null )   leftDepth  =  this.getLeftChild().getDepth();
+        if ( this.getRightChild() !==  null )   rigthDepth =  this.getRightChild().getDepth();
+
+
+        //First case Leaf: has not left or right subtree, only itself so minimal depth is one
+        if ( (leftDepth === 0) && (rigthDepth === 0))  return 1;
+
+        // Otherwise, return the highest number of any side, PLUS this parent node, hince the + 1 at the end
+        if ( leftDepth > rigthDepth )
+              return leftDepth + 1;
+        else
+              return rigthDepth + 1;
+
+ }
 
 
     getSubTreeWidth() {
