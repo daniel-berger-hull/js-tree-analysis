@@ -1,3 +1,9 @@
+Arpril 27
+=========
+
+Started the AVL rotations in the TreeGraph class.
+The Left Left is started.. Problem of too much recursion dough...
+
 Arpril 22
 =========
 

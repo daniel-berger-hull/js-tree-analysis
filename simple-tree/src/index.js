@@ -43,15 +43,16 @@ export const init = () => {
 
 
    // 'Init: Create Random Values for Nodes...
-    for (let i=0;i<25;i++) {
-        const newValue = Math.round( Math.random() * 99) + 1;
-        allNodes.push(newValue);
-    }
+    // for (let i=0;i<25;i++) {
+    //     const newValue = Math.round( Math.random() * 99) + 1;
+    //     allNodes.push(newValue);
+    // }
 
     // Uncomment this line to have a very symetric Tree, for testing it is best...
     // allNodes.push(25,75,15,35,60,90,7,20,30,40);
-    // allNodes.push(25,75,35,60,90,30,70,80,95,28);
+    // allNodes.push(25,75,35,60,90,30,70,80,95,28); 
     
+    allNodes.push(25,75,15,35,60,90,7,20,30,40,5,2) ;
 
     console.log("Init: Initial Random values:");
     console.log( allNodes );
@@ -67,10 +68,16 @@ export const init = () => {
 
 
     treeGraph.recalculate();
+    treeGraph.displayNodes();
+
+    // console.log('%c Post-Order values:',"color:red");
+    // console.log(treeGraph.getValuesPostOrder());
+
+    treeGraph.reorderAVLTree();
+
+
     // console.log(`Init: Tree Depth = ${treeGraph.getDepth()} , Width = ${treeGraph.getWidth()}`);
 
-//      console.log(`Init: Display Nodes...`);
-//      console.log( treeGraph.displayNodes() );
  }
 
 

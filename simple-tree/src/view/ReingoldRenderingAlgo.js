@@ -124,7 +124,7 @@ export class ReingoldRenderingAlgo {
             node.setX(xCenterPos);
             node.setY(yPos);
 
-            console.log(`Final Node ${node.getValue()} assigned to [${xCenterPos} , ${yPos}], width is 1`);
+            // console.log(`Final Node ${node.getValue()} assigned to [${xCenterPos} , ${yPos}], width is 1`);
             return;
         }
 
@@ -141,7 +141,7 @@ export class ReingoldRenderingAlgo {
             const nextCenterX = xCenterPos;
             
 
-            console.log(`Left Only Node ${node.getValue()} size of ${leftWidth} assigned to [${xCenterPos} , ${yPos}], deltaX = ${deltaX} and nextCenterX = ${nextCenterX}, width is ${node.getSubTreeWidth()}`);
+            // console.log(`Left Only Node ${node.getValue()} size of ${leftWidth} assigned to [${xCenterPos} , ${yPos}], deltaX = ${deltaX} and nextCenterX = ${nextCenterX}, width is ${node.getSubTreeWidth()}`);
 
             this.assignStartPos(node.getLeftChild() ,  nextCenterX, yPos+1);
         }
@@ -159,7 +159,7 @@ export class ReingoldRenderingAlgo {
             const nextCenterX = xCenterPos;
             
 
-            console.log(`Rigth Only Node ${node.getValue()} size of ${rightWidth} assigned to [${xCenterPos} , ${yPos}], deltaX = ${deltaX} and nextCenterX = ${nextCenterX} , width is ${node.getSubTreeWidth()}`);
+            // console.log(`Rigth Only Node ${node.getValue()} size of ${rightWidth} assigned to [${xCenterPos} , ${yPos}], deltaX = ${deltaX} and nextCenterX = ${nextCenterX} , width is ${node.getSubTreeWidth()}`);
         
             this.assignStartPos(node.getRightChild() ,  nextCenterX, yPos+1);
         }
@@ -180,7 +180,7 @@ export class ReingoldRenderingAlgo {
             const nextRightCenterX = xCenterPos + deltaXRight;
 
             
-            console.log(`Full Tree  Node ${node.getValue()} size of L${leftWidth} R${rightWidth} assigned to [${xCenterPos} , ${yPos}], Left deltaX = ${deltaXLeft} and Left nextCenterX = ${nextLeftCenterX},  Right deltaX = ${deltaXRight} and Right nextCenterX = ${nextRightCenterX} , width is ${node.getSubTreeWidth()}`);
+            // console.log(`Full Tree  Node ${node.getValue()} size of L${leftWidth} R${rightWidth} assigned to [${xCenterPos} , ${yPos}], Left deltaX = ${deltaXLeft} and Left nextCenterX = ${nextLeftCenterX},  Right deltaX = ${deltaXRight} and Right nextCenterX = ${nextRightCenterX} , width is ${node.getSubTreeWidth()}`);
 
             this.assignStartPos(node.getLeftChild() ,  nextLeftCenterX, yPos+1);
             this.assignStartPos(node.getRightChild() , nextRightCenterX, yPos+1);

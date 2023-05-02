@@ -6,6 +6,11 @@ export const VALUE_NOT_FOUND_CODE = -5;
 
 export const NODE_HEIGTH_NOT_KNOWN  = -1;
 
+export const NODE_CHILD_DELTA_NEUTRAL = 0;
+
+export const AVL_MAX_CHILD_DELTA      = 1;
+
+
 
 
 
@@ -16,6 +21,7 @@ export class Node {
     #leftChild;
     #rightChild;
     #height;
+    #childHeightDelta;
   
     #x;
     #y;
@@ -28,15 +34,15 @@ export class Node {
         if ( this.isValidValue(value) )  this.#value = value;
         else this.#value = INVALID_NODE_VALUE;
 
-        this.#leftChild  = null;
-        this.#rightChild = null;
-        this.#height     = NODE_HEIGTH_NOT_KNOWN;
+        this.#leftChild        = null;
+        this.#rightChild       = null;
+        this.#height           = NODE_HEIGTH_NOT_KNOWN;
+        this.#childHeightDelta = NODE_CHILD_DELTA_NEUTRAL;
     }
 
-    getValue() {
-
-        return this.#value;
-    }
+    getValue()          {    return this.#value;              }     
+    getHeight()         {    return this.#height;             }
+    // getChildDelta()     {    return this.#childHeightDelta;   }
 
     getValues() {
 
@@ -58,8 +64,12 @@ export class Node {
 
     }
 
-    getLeftChild()   {   return this.#leftChild;  }
-    getRightChild()  {   return this.#rightChild; }
+    getLeftChild()       {   return this.#leftChild;  }
+    getRightChild()      {   return this.#rightChild; }
+
+    setLeftChild(node)   {   this.#leftChild  = node;  }
+    setRightChild(node)  {   this.#rightChild = node; }
+
 
     getChildrenCount() {
 
@@ -87,7 +97,34 @@ export class Node {
     setY(newY)           { this.#y = newY;       }
     
     
-    
+    toString()          { return `${this.getValue()} , Height=${this.getHeight()},  Child Delta=${this.getChildDelta()}`; }
+
+    getValue()          {    return this.#value;    } 
+    getHeight()         {    return this.#height;   }
+
+
+    getChildDelta()  {
+
+        const leftHeight = (this.getLeftChild() !== null) ? this.getLeftChild().getHeight() : 0;
+        const rightHeight = (this.getRightChild() !== null) ? this.getRightChild().getHeight() : 0;
+        
+        return Math.abs(leftHeight-rightHeight);  
+    }
+
+    getValues() {
+
+        const result = [];
+        if ( this.getLeftChild() !== null)  result.push( ...this.getLeftChild().getValues() );
+        
+        result.push( this.getValue() );
+
+        if ( this.getRightChild() !== null)  result.push( ...this.getRightChild().getValues() );
+
+
+        return result;
+    }
+
+
 
     insert(newValue) {
 
@@ -134,15 +171,16 @@ export class Node {
 
 
         //First case Leaf: has not left or right subtree, only itself so minimal depth is one
-        if ( (leftDepth === 0) && (rigthDepth === 0))    this.#height = 1;
-        
-       
-
+        if ( (leftDepth === 0) && (rigthDepth === 0))    
+            this.#height = 1;
         // Otherwise, return the highest number of any side, PLUS this parent node, hince the + 1 at the end
-        else if ( leftDepth > rigthDepth )
-            this.#height =  leftDepth + 1;
+        else if ( leftDepth > rigthDepth ) 
+            this.#height =  leftDepth + 1;           
         else
             this.#height =  rigthDepth + 1;
+
+        //Difference between the height of but subtrees is required for AVL Trees...
+        this.#childHeightDelta = leftDepth - rigthDepth;
 
         return  this.#height;
  }
@@ -224,6 +262,8 @@ export class TreeGraph {
     getRootNode()                { return this.#rootNode; };
     getDepth()                   { return this.#depth;    };
     getWidth()                   { return this.#width;    };
+
+
 
     insert(newValue) {
 
@@ -407,12 +447,58 @@ export class TreeGraph {
         return values;
     }
 
+    leftLeftCase(parent,node){
+
+        let tmp = node;
+
+        node = node.getLeftChild();
+        node.setRightChild(tmp);
+        parent.setLeftChild(node);
+        tmp.setLeftChild(null);
+
+
+        // node.getDepth();
+        parent.getDepth();
+
+
+        //Left Child become current node (formelly node)
+        // former node (formelly node) become right child of 
+        //parent now points to new current node (formelly left child)
+    }
+
+    reorderAVLTree() {
+
+
+        let parentNode = null;
+        
+
+        console.log("reorderAVLTree");
+        const _reorder = ( parent, node  ) => {
+
+            if ( node.getLeftChild() !==  null)    _reorder( node, node.getLeftChild() );
+            if ( node.getRightChild() !==  null)   _reorder( node, node.getRightChild() );  
+
+            if ( Math.abs(node.getChildDelta()) > AVL_MAX_CHILD_DELTA ) {
+                console.log(`Node ${node.getValue()} needs an AVL rotation (delta is ${node.getChildDelta()})}`);
+
+                this.leftLeftCase(parent, node);
+            }
+
+            // Reorder in AVL implies 3 levels of node, the node itself, but also its parent and children also. 
+            //Childre are easy to access, but the parent is not directly know by a node, so that is why we keep track in 'parentNode' variable
+            parentNode = node;
+        }
+
+        _reorder( null, this.getRootNode() );
+    }
+
 
     displayNodes () {
 
         let  currentLevel = 0;
 
 
+        this.getRootNode().getDepth();
 
         const _displayNodes = (node) => {
 
@@ -421,7 +507,8 @@ export class TreeGraph {
             currentLevel++;
 
             if ( node.getLeftChild() !==  null)    _displayNodes( node.getLeftChild() );
-            console.log("Level " + currentLevel + " --> "  +  node.getValue());
+            // console.log( node.getValue() + " at Level " + currentLevel + " , Height = " + node.getHeight() );
+            console.log( node.toString() );
             if ( node.getRightChild() !==  null)   _displayNodes( node.getRightChild() );  
 
             currentLevel--;
