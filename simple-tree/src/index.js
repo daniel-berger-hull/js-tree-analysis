@@ -46,16 +46,28 @@ export const init = () => {
 
 
    // 'Init: Create Random Values for Nodes...
-    // for (let i=0;i<25;i++) {
-    //     const newValue = Math.round( Math.random() * 99) + 1;
-    //     allNodes.push(newValue);
-    // }
+    for (let i=0;i<10;i++) {
+        const newValue = Math.round( Math.random() * 99) + 1;
+        allNodes.push(newValue);
+    }
 
     // Uncomment this line to have a very symetric Tree, for testing it is best...
-    // allNodes.push(25,75,15,35,60,90,7,20,30,40);
-    // allNodes.push(25,75,35,60,90,30,70,80,95,28); 
+    //  allNodes.push(25,75,15,35,60,90,7,20,30,40);
+    //  allNodes.push(25,75,35,60,90,30,70,80,95,28);  // Not working 
     
-    allNodes.push(25,75,15,35,60,90,85,95,97) ;
+    
+    //   allNodes.push(25,75,15,35,7,20,30,40);          // Case simple Right Rotation case
+    //    allNodes.push(25,75,15,35,30,40) ;   //  Case Right-X Rotation case
+    //  allNodes.push(25,75,15,35,7,20,30,40,5);           // Case simple Right Rotation case (second case)
+     
+    // allNodes.push(25,75,15,35,30,40) ;   //  Case Right-X Rotation case
+    
+    
+    //allNodes.push(25,75,15,35,30,40,45) ;   // Case Left and Right Rotation special case...
+    
+    // allNodes.push(35,20,15) ;   //  Case Right-X Rotation case
+    //allNodes.push(25,75,15,35,30,40,45) ;   // Case Left and Right Rotation special case...
+ 
 
     console.log("Init: Initial Random values:");
     console.log( allNodes );
@@ -63,33 +75,26 @@ export const init = () => {
     // Inserting all the random values in the tree..."
     allNodes.forEach( (element) => {  treeGraph1.insert(element); })
 
-    // allNodes.forEach( (element) => {  treeGraph2.insert(element); })
-    
-
-    // allNodes.forEach( (element) => {  
-    //     const result = (treeGraph.find(element) !== null) ? "found" : "Not found";
-    //     console.log(`Searching for ${element} --> ${result}`);
-    // });
-
-
-    treeGraph1.recalculate();
+    treeGraph1.recalculateDepth();
     treeGraph1.displayNodes();
 
 
     treeGraph1.deepCopy(treeGraph2);
-    
 
-    console.log("%c Copy of treeGraph1:","color:green");
-    treeGraph2.recalculate();
+  
+    treeGraph2.recalculateDepth();
+    treeGraph2.reorderAVLTree();
+
+    // console.log(`%c Value Right after  reorderAVLTree on treeGraph2:`,"color:purple");
+    // treeGraph2.displayNodes();
+
+    //
+    
+    console.log(`%c Value after recalculate of treeGraph2:`,"color:green");
+    
+    treeGraph2.recalculateDepth();
     treeGraph2.displayNodes();
 
-    // console.log('%c Post-Order values:',"color:red");
-    // console.log(treeGraph.getValuesPostOrder());
-
-     treeGraph2.reorderAVLTree();
-
-
-    // console.log(`Init: Tree Depth = ${treeGraph.getDepth()} , Width = ${treeGraph.getWidth()}`);
 
  }
 
