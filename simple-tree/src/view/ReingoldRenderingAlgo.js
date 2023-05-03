@@ -1,4 +1,4 @@
-import { Node } from '../model/Tree.js';
+import { Node } from '../model/Node.js';
 
 import { CANVAS_MAX_WIDTH ,
          NODE_WIDTH, NODE_HEIGTH,

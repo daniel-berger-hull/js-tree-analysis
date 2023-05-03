@@ -136,18 +136,26 @@ export class TreeGraphRender {
 
          const resultSegments  = this.#reingoldRenderingAlgo.getRenderSegments();
 
-         resultSegments.forEach( segment => { this.renderSegment(  context, 
-                                                                 { x: 100 + (segment.xStart*40), 
-                                                                   y: 350 + (segment.yStart*30) } , 
-                                                                 { x: 100 + (segment.xEnd  *40),   
-                                                                   y: 350 + (segment.yEnd  *30)} , 
-                                                                   "#FF0000")   });
-         
+        //  resultSegments.forEach( segment => { this.renderSegment(  context, 
+        //                                                          { x: 100 + (segment.xStart*40), 
+        //                                                            y: 350 + (segment.yStart*30) } , 
+        //                                                          { x: 100 + (segment.xEnd  *40),   
+        //                                                            y: 350 + (segment.yEnd  *30)} , 
+        //                                                            "#FF0000")   });
+        resultSegments.forEach( segment => { this.renderSegment(  context, 
+                                            {   x: xCenter + (segment.xStart*40), 
+                                                y: yCenter + (segment.yStart*30) } , 
+                                            {   x: xCenter + (segment.xEnd  *40),   
+                                                y: yCenter + (segment.yEnd  *30)} , 
+                                                "#FF0000")   }); 
+
          const drawNode = (context,nextNode) => { 
   
-             const nodePos = {  x : 100 +   (nextNode.getX() * 40),
-                                y : 350 + (nextNode.getY() * 30) };
-  
+            //  const nodePos = {  x : 100 +   (nextNode.getX() * 40),
+            //                     y : 350 + (nextNode.getY() * 30) };
+            const nodePos = {  x : xCenter + (nextNode.getX() * 40),
+                               y : yCenter + (nextNode.getY() * 30) };
+      
              
                 this.renderNode(context, nodePos, 10 , nextNode.getValue()); 
  
@@ -205,9 +213,18 @@ export class TreeGraphRender {
         let xCenter = this.#marginX + (this.#treeWidthSpan/2); 
         let yCenter = this.#marginY;
 
-        this.renderTreeGraphBasic( ctx, xCenter, yCenter );
+        //this.renderTreeGraphBasic( ctx, xCenter, yCenter );
         this.renderTreeGraphReingold( ctx, xCenter, yCenter );
+    }
 
-     
+    draw(xPos, yPos) {
+
+        var ctx = this.#canvas.getContext("2d");
+
+        let xCenter = this.#marginX + xPos;
+        let yCenter = this.#marginY + yPos;
+
+         this.renderTreeGraphReingold( ctx, xCenter, yCenter );
+
     }
 }

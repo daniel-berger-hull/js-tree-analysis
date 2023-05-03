@@ -1,6 +1,4 @@
-// import { Node , TreeGraph, renderNode , renderSegment  } from './model/Tree.js';
-import { Node , TreeGraph } from './model/Tree.js';
-
+import { TreeGraph }      from './model/TreeGraph.js';
 import { TreeGraphRender} from './view/TreeGraphRender.js';
 
 
@@ -12,7 +10,9 @@ const NODE_SPACE_BETWEEN_X  =   5;
 const NODE_SPACE_BETWEEN_Y  =   20;
 
 
-let treeGraph =  {};
+let treeGraph1 =  {};
+let treeGraph2 =  {};
+
 // let nodesStack = [];
 
 // let graphNodeLocations = [];
@@ -35,11 +35,14 @@ let treeGraph =  {};
 
 export const init = () => {
 
+    // Would need a copy function in the TreeGraph
 
     let allNodes = [];
-    treeGraph =  new TreeGraph();
+    treeGraph1 =  new TreeGraph();
+    treeGraph1.insert(50);
 
-    treeGraph.insert(50);
+    treeGraph2 =  new TreeGraph();
+    // treeGraph2.insert(50);
 
 
    // 'Init: Create Random Values for Nodes...
@@ -52,14 +55,16 @@ export const init = () => {
     // allNodes.push(25,75,15,35,60,90,7,20,30,40);
     // allNodes.push(25,75,35,60,90,30,70,80,95,28); 
     
-    allNodes.push(25,75,15,35,60,90,7,20,30,40,5,2) ;
+    allNodes.push(25,75,15,35,60,90,85,95,97) ;
 
     console.log("Init: Initial Random values:");
     console.log( allNodes );
 
     // Inserting all the random values in the tree..."
-    allNodes.forEach( (element) => {  treeGraph.insert(element); })
+    allNodes.forEach( (element) => {  treeGraph1.insert(element); })
 
+    // allNodes.forEach( (element) => {  treeGraph2.insert(element); })
+    
 
     // allNodes.forEach( (element) => {  
     //     const result = (treeGraph.find(element) !== null) ? "found" : "Not found";
@@ -67,13 +72,21 @@ export const init = () => {
     // });
 
 
-    treeGraph.recalculate();
-    treeGraph.displayNodes();
+    treeGraph1.recalculate();
+    treeGraph1.displayNodes();
+
+
+    treeGraph1.deepCopy(treeGraph2);
+    
+
+    console.log("%c Copy of treeGraph1:","color:green");
+    treeGraph2.recalculate();
+    treeGraph2.displayNodes();
 
     // console.log('%c Post-Order values:',"color:red");
     // console.log(treeGraph.getValuesPostOrder());
 
-    treeGraph.reorderAVLTree();
+     treeGraph2.reorderAVLTree();
 
 
     // console.log(`Init: Tree Depth = ${treeGraph.getDepth()} , Width = ${treeGraph.getWidth()}`);
@@ -86,11 +99,25 @@ export const render = () => {
     console.log("Render called...");
     var canvas = document.getElementById("tree-canvas");
 
-    const treeRender = new TreeGraphRender(canvas,treeGraph);
+    const treeRender1 = new TreeGraphRender(canvas,treeGraph1);
+    const treeRender2 = new TreeGraphRender(canvas,treeGraph2);
+    
 
-    treeRender.displaySepcs();
+    treeRender1.displaySepcs();
 
-    treeRender.draw();
+    //treeRender.draw();
+
+
+    // let xCenter = this.#marginX + (this.#treeWidthSpan/2); 
+    // let yCenter = this.#marginY;
+    treeRender1.draw(50, 50);
+    treeRender2.draw(50, 300);
+
+
+
+}
+
+
 
    
 
@@ -98,7 +125,7 @@ export const render = () => {
 
   
 
- }
+ 
 
 
 
