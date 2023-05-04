@@ -46,7 +46,7 @@ export const init = () => {
 
 
    // 'Init: Create Random Values for Nodes...
-    for (let i=0;i<10;i++) {
+    for (let i=0;i<15;i++) {
         const newValue = Math.round( Math.random() * 99) + 1;
         allNodes.push(newValue);
     }
@@ -68,6 +68,9 @@ export const init = () => {
     // allNodes.push(35,20,15) ;   //  Case Right-X Rotation case
     //allNodes.push(25,75,15,35,30,40,45) ;   // Case Left and Right Rotation special case...
  
+
+
+    // allNodes.push(39, 18, 97, 40, 52, 75, 15, 40, 5, 34);
 
     console.log("Init: Initial Random values:");
     console.log( allNodes );
@@ -101,14 +104,14 @@ export const init = () => {
 
 
 export const render = () => {
-    console.log("Render called...");
+    // console.log("Render called...");
     var canvas = document.getElementById("tree-canvas");
 
     const treeRender1 = new TreeGraphRender(canvas,treeGraph1);
     const treeRender2 = new TreeGraphRender(canvas,treeGraph2);
     
 
-    treeRender1.displaySepcs();
+    // treeRender1.displaySepcs();
 
     //treeRender.draw();
 

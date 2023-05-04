@@ -115,11 +115,26 @@ export class Node {
         return result;
     }
 
+    isValidValue(value) {
+
+        if (value <0) return false;
+        if (value >MAX_NODE_VALUE) return false;
+
+        return true;
+    }
+
+    isValidNode(newNode) {
+
+          if ( (newNode === null) || (newNode === undefined) )  return false;
+          if (newNode.getValue() === undefined)  return false;
+
+          return true;
+    }
 
 
     insert(newValue) {
 
-        //Make sure to create an node first
+        //Will stick to positive integer for now...
         if (newValue <= 0)
             throw "0 or negative value! current is " + newValue;
 
@@ -129,6 +144,7 @@ export class Node {
     }
 
 
+    //Implicit here, children with value equal to this node value are put to the right of this value...
     insertChild(child) {
       
         if (!this.isValidValue(child)) return;
@@ -148,32 +164,31 @@ export class Node {
                 this.#rightChild = child;
         }
            
-        //Implicit here, children with value equal to this node value are put to the right of this value...
     }
 
 
 
-    getDepth() {
+    getHeight() {
 
-        let leftDepth  = 0;
-        let rigthDepth = 0;
+        let leftHeight  = 0;
+        let rigthHeight = 0;
         
 
-        if ( this.getLeftChild()  !==  null )   leftDepth  =  this.getLeftChild().getDepth();
-        if ( this.getRightChild() !==  null )   rigthDepth =  this.getRightChild().getDepth();
+        if ( this.getLeftChild()  !==  null )   leftHeight  =  this.getLeftChild().getHeight();
+        if ( this.getRightChild() !==  null )   rigthHeight =  this.getRightChild().getHeight();
 
 
         //First case Leaf: has not left or right subtree, only itself so minimal depth is one
-        if ( (leftDepth === 0) && (rigthDepth === 0))    
+        if ( (leftHeight === 0) && (rigthHeight === 0))    
             this.#height = 1;
         // Otherwise, return the highest number of any side, PLUS this parent node, hince the + 1 at the end
-        else if ( leftDepth > rigthDepth ) 
-            this.#height =  leftDepth + 1;           
+        else if ( leftHeight > rigthHeight ) 
+            this.#height =  leftHeight + 1;           
         else
-            this.#height =  rigthDepth + 1;
+            this.#height =  rigthHeight + 1;
 
         //Difference between the height of but subtrees is required for AVL Trees...
-        this.#childHeightDelta = leftDepth - rigthDepth;
+        this.#childHeightDelta = leftHeight - rigthHeight;
 
         return  this.#height;
  }
@@ -190,16 +205,16 @@ export class Node {
 
 
             //The leafs of the tree have only themselve, or a width of 1 in other words...
-            if ( childCount === 0)  return 1;
+            if ( childCount === 0 )  return 1;
 
+            // We need the width of the subtrees to continue the calculation, so using recursivity to get this info, before moving further...
             if ( childNode.getLeftChild()  !==  null )   leftWidth = getSubWidth(childNode.getLeftChild());
             if ( childNode.getRightChild() !==  null )   rigthWith = getSubWidth(childNode.getRightChild());
         
-            // then the simplest case is that one side an empty subtree (then count of 0), and the other has only one leaf (then count of 1), then it is a vertical subtree, widht is 1 
+            // Ehen the simplest case is that one side of the tree is empty  (then count of 0), and the other has only one leaf (then count of 1), then it is a vertical subtree, widht is 1 
             if ( (leftWidth+rigthWith) === 1)  return 1;
 
-
-            // The case of unbalanced subtrees: One if empty, while the other has a realy subtree (more than one leaf). 
+            // The case of unbalanced subtrees: One side is empty, while the other has a real subtree (more than one leaf). We ignore the width of the parent here, and just take the width of the subtree...
             if ( (leftWidth !==0) && (rigthWith === 0) )  return leftWidth;
             if ( (leftWidth ===0) && (rigthWith !== 0) )  return rigthWith;
             
@@ -213,20 +228,7 @@ export class Node {
            
     }
 
-    isValidValue(value) {
-        if (value <0) return false;
-        if (value >MAX_NODE_VALUE) return false;
-
-        return true;
-    }
-
-    isValidNode(newNode) {
-
-          if ( (newNode === null) || (newNode === undefined) )  return false;
-          if (newNode.getValue() === undefined)  return false;
-
-          return true;
-    }
+    
 
 
 }

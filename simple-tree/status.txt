@@ -1,3 +1,20 @@
+May 4
+=====
+
+  Fixed few more rotations problems... It works not bad with up to 15 random  numbers: This is where either 
+         - the drawing dispear to the left   
+                     or
+         - Some nodes still end up with a child difference of 2 or more...
+  But in general, it is way better than it used to be, and I'm close to something robust...
+  
+
+To DO:
+
+* When using random values, The graphs are not draw at the same place (not minor difference, but it can jump from one really centered,
+  to one right on the left side of the screen, etc) 
+
+  
+
 Arpril 27
 =========
 

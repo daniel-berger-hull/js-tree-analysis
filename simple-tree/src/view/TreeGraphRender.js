@@ -130,7 +130,7 @@ export class TreeGraphRender {
          const x = this.#treeGraph.getRootNode().getX();
          const y = this.#treeGraph.getRootNode().getY();
          
-         console.log(`%c After Reingo Algo, node is ${x}, ${y}`, "color:red");
+        //  console.log(`%c After Reingo Algo, node is ${x}, ${y}`, "color:red");
  
  
 
@@ -157,7 +157,9 @@ export class TreeGraphRender {
                                y : yCenter + (nextNode.getY() * 30) };
       
              
-                this.renderNode(context, nodePos, 10 , nextNode.getValue()); 
+                const isLeaf = (nextNode.getChildrenCount() === 0) ? true : false;
+
+                this.renderNode(context, nodePos, 10 , nextNode.getValue(),isLeaf); 
  
  
                 if ( nextNode.getLeftChild() !==  null)     drawNode(context,nextNode.getLeftChild());
@@ -166,12 +168,19 @@ export class TreeGraphRender {
  
          drawNode(context,this.#treeGraph.getRootNode());
 }    
-    renderNode(context, position, size , value) {
+    renderNode(context, position, size , value, isLeaf) {
 
         context.strokeStyle = "#FBED20";
         context.beginPath();
         context.arc(position.x, position.y, size, 0, 2 * Math.PI);
-        context.fillStyle = 'white';
+
+
+        // context.fillStyle = 'white';
+        context.fillStyle = (isLeaf === true) ? 'blue' : 'white';
+
+
+    
+
         context.fill();
         context.lineWidth = 2;
         context.stroke();
@@ -183,7 +192,9 @@ export class TreeGraphRender {
 
         context.fillStyle = "black";
         context.fillText(label, position.x+1, position.y+1);
-        context.fillStyle = "#0046BE";
+        // context.fillStyle = "#0046BE";
+
+        context.fillStyle = (isLeaf === true) ? 'white' : "#0046BE";
         context.fillText(label, position.x, position.y);
     
     }

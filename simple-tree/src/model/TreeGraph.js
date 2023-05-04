@@ -128,7 +128,7 @@ export class TreeGraph {
         this.#width =  1 << (this.#depth-1);      
 
 
-        this.getRootNode().getDepth();
+        this.getRootNode().getHeight();
     }
 
 
@@ -234,6 +234,8 @@ export class TreeGraph {
     }
 
 
+
+     //Right Child become current 'node' (formelly node), and former 'node' becomes its left child. Parent now points to new current 'node' (formelly right child)
     rightRotation(parent,node){
 
         let tmp = node;
@@ -242,10 +244,7 @@ export class TreeGraph {
         tmp.setLeftChild(node.getRightChild());
         node.setRightChild(tmp);
        
-
-
         if (parent !== null) {        
-            //parent.setLeftChild(node);   //Used to work with the left child!?!
             if (node.getValue()<parent.getValue())
                 parent.setLeftChild(node);
             else
@@ -253,65 +252,17 @@ export class TreeGraph {
         } else
             this.setRootNode(node);
         
-        this.getRootNode().getDepth();
+        this.getRootNode().getHeight();
 
-
-        //Right Child become current node (formelly node)
-        // former node (formelly node) become left child of 
-        //parent now points to new current node (formelly right child)
     }
 
-    specialRightRotation(parent,node){
-
-        let tmp = node;
-
-        node = node.getLeftChild();
-        tmp.setLeftChild(node.getRightChild());
-        node.setRightChild(tmp);
-       
-
-
-        if (parent !== null)        
-            parent.setRightChild(node);   //This is here the big difference with rightRotation... Used to work with the left child!?!
-         else
-            this.setRootNode(node);
-        
-        this.getRootNode().getDepth();
-
-
-        //Right Child become current node (formelly node)
-        // former node (formelly node) become left child of 
-        //parent now points to new current node (formelly right child)
-    }
+ 
 
     
     rightLeftRotation(parent,node){
 
-
-        this.specialLeftRotation(node,node.getLeftChild());
-     
-
-
-        //May use the rightRotation() method here instead..
-        
-        let tmp = node;
-        node = node.getLeftChild();
-        tmp.setLeftChild(node.getRightChild());
-        node.setRightChild(tmp);
-       
-
-
-        if (parent !== null)
-            parent.setLeftChild(node);
-        else
-            this.setRootNode(node);
-        
-        this.getRootNode().getDepth();
-
-
-        //Right Child become current node (formelly node)
-        // former node (formelly node) become left child of 
-        //parent now points to new current node (formelly right child)
+        this.leftRotation(node,node.getLeftChild());
+        this.rightRotation(parent,node);
     }
     
 
@@ -331,52 +282,61 @@ export class TreeGraph {
         } else
             this.setRootNode(node);
         
-        this.getRootNode().getDepth();
+        this.getRootNode().getHeight();
+    }
+
+
+    leftRightRotation(parent,node){
+
+        this.rightRotation(node,node.getRightChild());
+        this.leftRotation(parent,node);
     }
 
    
-    specialLeftRotation(parent,node){
+    // Used to be necessary in the rightLeftRotation method...
+    // specialLeftRotation(parent,node){
 
-        let tmp = node;
+    //     let tmp = node;
 
-        node = node.getRightChild();
-        tmp.setRightChild(node.getLeftChild());
-        node.setLeftChild(tmp);
+    //     node = node.getRightChild();
+    //     tmp.setRightChild(node.getLeftChild());
+    //     node.setLeftChild(tmp);
         
-        // if (parent !== null)
-        //     parent.setLeftChild(node);  // Here is the difference with the LeftRotation
-        // else
-        //     this.setRootNode(node);
-        if (parent !== null) {
-            if (node.getValue()<parent.getValue())
-                parent.setLeftChild(node);
-            else
-                parent.setRightChild(node); 
-        } else
-            this.setRootNode(node);
+    //     if (parent !== null) {
+    //         if (node.getValue()<parent.getValue())
+    //             parent.setLeftChild(node);
+    //         else
+    //             parent.setRightChild(node); 
+    //     } else
+    //         this.setRootNode(node);
 
-        this.getRootNode().getDepth();
-    }
+    //     this.getRootNode().getHeight();
+    // }
 
+  
+    // Used to be necessary in the LeftRightRotation method...
+    // specialRightRotation(parent,node){
 
-    // Ok works
-    leftRightRotation(parent,node){
+    //     let tmp = node;
 
-        this.specialRightRotation(node,node.getRightChild());
-
-        // May user the leftRotation method here..
-        let tmp = node;
-        node = node.getRightChild();
-        tmp.setRightChild(node.getLeftChild());
-        node.setLeftChild(tmp);
+    //     node = node.getLeftChild();
+    //     tmp.setLeftChild(node.getRightChild());
+    //     node.setRightChild(tmp);
+       
+    //     if (parent !== null)        
+    //         if (node.getValue()<parent.getValue())
+    //             parent.setLeftChild(node);
+    //         else
+    //             parent.setRightChild(node); 
+    //      else
+    //         this.setRootNode(node);
         
-        if (parent !== null) {
-                parent.setRightChild(node);
-        } else
-            this.setRootNode(node);
-        
-        this.getRootNode().getDepth();
-    }
+    //     this.getRootNode().getHeight();
+
+    // }
+
+
+   
 
     reorderAVLTree() {
 
@@ -390,28 +350,33 @@ export class TreeGraph {
             if ( node.getLeftChild() !==  null)    _reorder( node, node.getLeftChild() );
             if ( node.getRightChild() !==  null)   _reorder( node, node.getRightChild() );  
 
-           //console.log(node.getValue());
             // the Tree is left heavy...
             if ( node.getChildDelta() > AVL_MAX_CHILD_DELTA ) {
-                console.log(`Node ${node.getValue()} needs an AVL  Right rotation (delta is ${node.getChildDelta()})}`);
 
-                if ( node.getLeftChild().getChildDelta() >= 0)
+                if ( node.getLeftChild().getChildDelta() >= 0) {
+                    console.log(`Node ${node.getValue()} needs an AVL  Right rotation (delta is ${node.getChildDelta()})}`);
                     this.rightRotation(parent, node);
-                else
+                }
+                    
+                else {
+                    console.log(`Node ${node.getValue()} needs an AVL  Right-Left rotation (delta is ${node.getChildDelta()})}`);
                     this.rightLeftRotation(parent, node);
+                }
 
-                let a =2;
             } 
             // Or the right side of the Tree is heavy... 
             else  if ( node.getChildDelta() <  -AVL_MAX_CHILD_DELTA ) {
-                console.log(`Node ${node.getValue()} needs an AVL Left  rotation (delta is ${node.getChildDelta()})}`);
+                
 
-                if ( node.getRightChild().getChildDelta() <= 0)
+                if ( node.getRightChild().getChildDelta() <= 0) {
+                    console.log(`Node ${node.getValue()} needs an AVL Left  rotation (delta is ${node.getChildDelta()})}`);
                     this.leftRotation(parent, node);
-                else
+                }
+                    
+                else {
+                    console.log(`Node ${node.getValue()} needs an AVL Left-Right  rotation (delta is ${node.getChildDelta()})}`);
                     this.leftRightRotation(parent, node);
-
-                let a =2;
+                }
             }
 
             // Reorder in AVL implies 3 levels of node, the node itself, but also its parent and children also. 
@@ -428,7 +393,7 @@ export class TreeGraph {
         let  currentLevel = 0;
 
 
-        this.getRootNode().getDepth();
+        this.getRootNode().getHeight();
 
         const _displayNodes = (node) => {
 

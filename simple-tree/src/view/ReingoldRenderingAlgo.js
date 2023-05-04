@@ -51,6 +51,8 @@ export class ReingoldRenderingAlgo {
 
 
 
+    // This methods assign locations (x,y) to the nodes of the tree, and also records the position (start,end) of all the segments required
+    // to draw a TreeGraph on an HTML canvas
     calculateNodesLocations() {
 
 
@@ -58,13 +60,6 @@ export class ReingoldRenderingAlgo {
 
         let node = this.#treeModel.getRootNode();
 
-
-        console.log(`%c assignPos II called` , "color:red");
-        // let leftCount = 0;
-        // let rightCount = 0;
-        
-        // if ( node.getLeftChild() !==  null )    leftCount  = node.getLeftChild().getTreeCount();
-        // if ( node.getRightChild() !==  null )   rightCount = node.getRightChild().getTreeCount();
          let leftWidth = 0;
          let rightWidth = 0;
         
