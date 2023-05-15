@@ -46,7 +46,7 @@ export const init = () => {
 
 
    // 'Init: Create Random Values for Nodes...
-    for (let i=0;i<15;i++) {
+    for (let i=0;i<35;i++) {
         const newValue = Math.round( Math.random() * 99) + 1;
         allNodes.push(newValue);
     }
@@ -79,7 +79,7 @@ export const init = () => {
     allNodes.forEach( (element) => {  treeGraph1.insert(element); })
 
     treeGraph1.recalculateDepth();
-    treeGraph1.displayNodes();
+    // treeGraph1.displayNodes();
 
 
     treeGraph1.deepCopy(treeGraph2);
@@ -96,7 +96,7 @@ export const init = () => {
     console.log(`%c Value after recalculate of treeGraph2:`,"color:green");
     
     treeGraph2.recalculateDepth();
-    treeGraph2.displayNodes();
+    // treeGraph2.displayNodes();
 
 
  }
@@ -119,7 +119,7 @@ export const render = () => {
     // let xCenter = this.#marginX + (this.#treeWidthSpan/2); 
     // let yCenter = this.#marginY;
     treeRender1.draw(50, 50);
-    treeRender2.draw(50, 300);
+    treeRender2.draw(50, 350);
 
 
 

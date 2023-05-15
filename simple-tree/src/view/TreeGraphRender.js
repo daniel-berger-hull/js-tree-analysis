@@ -143,11 +143,11 @@ export class TreeGraphRender {
         //                                                            y: 350 + (segment.yEnd  *30)} , 
         //                                                            "#FF0000")   });
         resultSegments.forEach( segment => { this.renderSegment(  context, 
-                                            {   x: xCenter + (segment.xStart*40), 
-                                                y: yCenter + (segment.yStart*30) } , 
-                                            {   x: xCenter + (segment.xEnd  *40),   
-                                                y: yCenter + (segment.yEnd  *30)} , 
-                                                "#FF0000")   }); 
+                                                                {   x: xCenter + (segment.xStart*40), 
+                                                                    y: yCenter + (segment.yStart*30) } , 
+                                                                {   x: xCenter + (segment.xEnd  *40),   
+                                                                    y: yCenter + (segment.yEnd  *30)} , 
+                                                                    "#FF0000")   }); 
 
          const drawNode = (context,nextNode) => { 
   
@@ -155,7 +155,7 @@ export class TreeGraphRender {
             //                     y : 350 + (nextNode.getY() * 30) };
             const nodePos = {  x : xCenter + (nextNode.getX() * 40),
                                y : yCenter + (nextNode.getY() * 30) };
-      
+       
              
                 const isLeaf = (nextNode.getChildrenCount() === 0) ? true : false;
 
@@ -201,6 +201,7 @@ export class TreeGraphRender {
 
     renderSegment (context, startPos, endPos, color) {
     
+        context.lineWidth = 2;
         context.beginPath();
         context.moveTo(startPos.x, startPos.y);
         context.lineTo(endPos.x, endPos.y);
@@ -221,6 +222,8 @@ export class TreeGraphRender {
 
         var ctx = this.#canvas.getContext("2d");
 
+      
+
         let xCenter = this.#marginX + (this.#treeWidthSpan/2); 
         let yCenter = this.#marginY;
 
@@ -228,14 +231,39 @@ export class TreeGraphRender {
         this.renderTreeGraphReingold( ctx, xCenter, yCenter );
     }
 
-    draw(xPos, yPos) {
+    draw(xStartPos, yStartPos) {
 
         var ctx = this.#canvas.getContext("2d");
 
-        let xCenter = this.#marginX + xPos;
-        let yCenter = this.#marginY + yPos;
+    
+        // let xCenter = this.#marginX + xPos;
+        // let xCenter = window.innerWidth / 2;
+        // let yCenter = this.#marginY + yStartPos ;
+        // // // let yCenter = this.#canvas.height  / 2;
+        // console.log(canvas.width); // 300
+        let xCenter = 50;
+        let yCenter = yStartPos ;
+    
 
          this.renderTreeGraphReingold( ctx, xCenter, yCenter );
+
+
+         /////////////////////////
+
+        //  ctx.beginPath();
+        //  ctx.moveTo(50, 50);
+        //  ctx.lineTo(50, 600);
+        //  ctx.strokeStyle = "#ff0000";
+        //  ctx.stroke(); 
+
+        //   ctx.beginPath();
+        //  ctx.moveTo(625, 50);
+        //  ctx.lineTo(625, 600);
+        //  ctx.strokeStyle = "#ff0000";
+        //  ctx.stroke();
+
+
+         /////////////////////////
 
     }
 }
