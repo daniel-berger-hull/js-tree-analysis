@@ -98,6 +98,13 @@ export const init = () => {
     treeGraph2.recalculateDepth();
     // treeGraph2.displayNodes();
 
+    var infoBox1 = document.getElementById("infoBox1");
+    var infoBox2 = document.getElementById("infoBox2");
+
+    infoBox1.setAttribute("size", "3");
+    infoBox1.setAttribute("height", "3");
+    infoBox1.setAttribute("width", "9");
+
 
  }
 
@@ -106,20 +113,50 @@ export const init = () => {
 export const render = () => {
     // console.log("Render called...");
     var canvas = document.getElementById("tree-canvas");
+    var canvas2 = document.getElementById("tree-canvas2");
 
     const treeRender1 = new TreeGraphRender(canvas,treeGraph1);
-    const treeRender2 = new TreeGraphRender(canvas,treeGraph2);
+    const treeRender2 = new TreeGraphRender(canvas2,treeGraph2);
+    
+
+    treeGraph1.recalculateDepth();
+    treeGraph2.recalculateDepth();
+
+    const tree1CanvasHeight = (treeGraph1.getDepth() * 30) + 25 + 25;
+    const tree2CanvasHeight = (treeGraph2.getDepth() * 30) + 25 + 25;
+    
+
+  //treeRender2.draw(50, 100 + (treeGraph1.getDepth() * 30) );
+
+
+    canvas.height  = tree1CanvasHeight;
+    canvas2.height = tree2CanvasHeight;
+
+
+
+    
+
+
     
 
     // treeRender1.displaySepcs();
 
     //treeRender.draw();
 
+   // const treeHeight  = this.#treeGraph.getRootNode().getHeight();
+
+
+   // treeGraph1.getDepth();
+    
 
     // let xCenter = this.#marginX + (this.#treeWidthSpan/2); 
     // let yCenter = this.#marginY;
-    treeRender1.draw(50, 50);
-    treeRender2.draw(50, 350);
+    treeRender1.draw(50, 5);
+    //treeRender2.draw(50, 300);
+    //treeRender2.draw(50, 100 + (treeGraph1.getDepth() * 30) );
+    treeRender2.draw(50, 5);
+    
+    
 
 
 

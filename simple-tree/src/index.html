@@ -7,6 +7,13 @@
     <title>Testing Tree</title>
 
     <link  rel="stylesheet" href="index.css" >
+
+   
+    <script type="module"  src="./lib.js">
+        registerComponents();
+    </script> 
+      
+</script> 
  
 </head>
     <body> 
@@ -20,9 +27,35 @@
         </div>
         <div class="page">
             <div id="center-section">
-               <h3>is another text!</h3>
+               <h3>Tree Analysis</h3>
+             
+             
+               
 
-               <canvas id="tree-canvas" width="1300px"  height="800px">Your browser does not support the HTML5 canvas tag.</canvas>               
+
+               <!-- <canvas id="tree-canvas" width="1200px"  height="800px">Your browser does not support the HTML5 canvas tag.</canvas>               -->
+               
+               <div class="canvas-box">
+
+                <div class="canvas-box-label">
+                    <tree-info-box id="infoBox1" class="testCustoms"  height="3" width="1" fontColor="#0046BE"></tree-info-box> 
+
+                </div>
+                <canvas id="tree-canvas" width="1200px"  height="400px">Your browser does not support the HTML5 canvas tag.</canvas>              
+               </div>
+
+
+               
+               
+
+
+
+               <div class="canvas-box">
+                <div class="canvas-box-label">
+                    <tree-info-box id="infoBox2" class="testCustoms"  height="3" width="1" fontColor="#D42869"></tree-info-box> 
+                </div>
+                 <canvas id="tree-canvas2" width="1200px"  height="400px">Your browser does not support the HTML5 canvas tag.</canvas>              
+              </div>
             </div>
         </div>
        
@@ -40,8 +73,12 @@
          function windowResize() {
 
             const canvas = document.getElementById("tree-canvas");
+            const canvas2 = document.getElementById("tree-canvas2");
+            
 
             canvas.width = window.innerWidth - 150;
+            canvas2.width = window.innerWidth - 150;
+            
             render();        
         }
 

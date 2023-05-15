@@ -48,6 +48,9 @@ export class TreeGraph {
         let newNode = new Node(newValue);
         this.getRootNode().insertChild(newNode);
 
+
+       
+
         return newValue;
     }
 
@@ -57,6 +60,8 @@ export class TreeGraph {
          const _deepCopy = (destination, node) => {
 
             destination.insert( node.getValue() );
+
+            //this.reorderAVLTree();
 
             if ( node.getLeftChild()  !==  null )   _deepCopy( destination, node.getLeftChild() );
             if ( node.getRightChild() !==  null )   _deepCopy( destination, node.getRightChild() ); 

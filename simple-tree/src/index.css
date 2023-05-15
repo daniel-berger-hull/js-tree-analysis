@@ -33,12 +33,45 @@ body {
     text-shadow: 1px 1px  black;
 }
 
+.canvas-box {
+    margin: 5px;
+    display: flex;
+    align-items: center;
+
+}
+
+.canvas-box-label {
+    margin: auto;
+    color: black;
+    /* flex-shrink: 3; */
+}
+
+#infoBox2 {
+    font-size: 30px;
+    fontColor: yellow;
+}
+
 #tree-canvas {
 
     margin: auto;
     background-image: linear-gradient(#0046BE, #6280b4);
     border: 3px solid #FBED20;
+
 }
+
+
+#tree-canvas2 {
+
+    margin: auto;
+    /* //background-image: linear-gradient(#0046BE, #6280b4); */
+    background-image: linear-gradient(#D42869,#EB6F9C );
+
+    border: 3px solid #FBED20;
+
+
+}
+
+
 
 .header-rotated-section {
   

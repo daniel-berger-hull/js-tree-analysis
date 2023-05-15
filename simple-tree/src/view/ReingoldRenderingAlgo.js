@@ -66,7 +66,10 @@ export class ReingoldRenderingAlgo {
         if ( node.getLeftChild() !==  null )    leftWidth  = node.getLeftChild().getSubTreeWidth();
         if ( node.getRightChild() !==  null )   rightWidth = node.getRightChild().getSubTreeWidth();
 
-        this.assignStartPos(node,leftWidth+1,1);
+        //this.assignStartPos(node,leftWidth+1,1);   This may be problematic when both sub trees are realy dispoportionate in size (one way bigger than the oter)
+        const centerXPos = Math.round( (leftWidth+1+rightWidth)/2 );
+        this.assignStartPos(node,centerXPos,1);
+        
 
         const recordSegments = (node) => {
 
@@ -93,6 +96,8 @@ export class ReingoldRenderingAlgo {
 
 
         recordSegments(node);
+
+
 
     }
 

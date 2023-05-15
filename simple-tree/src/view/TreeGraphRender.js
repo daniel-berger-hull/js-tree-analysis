@@ -129,6 +129,18 @@ export class TreeGraphRender {
          
          const x = this.#treeGraph.getRootNode().getX();
          const y = this.#treeGraph.getRootNode().getY();
+
+        //  const displayNodesPositions = (node) => {
+        //     if (node ===  null)  return;
+
+        //     if ( node.getLeftChild() !==  null)     displayNodesPositions(node.getLeftChild());
+        //     console.log(`Node ${node.getValue()} at [${node.getX()},${node.getY()}]`)
+        //     if ( node.getRightChild() !==  null)    displayNodesPositions(node.getRightChild());
+
+        //  }
+
+        //  console.log(`%c Display Node Position:`, "color:red");
+        //  displayNodesPositions(this.#treeGraph.getRootNode());
          
         //  console.log(`%c After Reingo Algo, node is ${x}, ${y}`, "color:red");
  
@@ -143,11 +155,11 @@ export class TreeGraphRender {
         //                                                            y: 350 + (segment.yEnd  *30)} , 
         //                                                            "#FF0000")   });
         resultSegments.forEach( segment => { this.renderSegment(  context, 
-                                                                {   x: xCenter + (segment.xStart*40), 
-                                                                    y: yCenter + (segment.yStart*30) } , 
-                                                                {   x: xCenter + (segment.xEnd  *40),   
-                                                                    y: yCenter + (segment.yEnd  *30)} , 
-                                                                    "#FF0000")   }); 
+                                            {   x: xCenter + (segment.xStart*40), 
+                                                y: yCenter + (segment.yStart*30) } , 
+                                            {   x: xCenter + (segment.xEnd  *40),   
+                                                y: yCenter + (segment.yEnd  *30)} , 
+                                                "#E0E0E0")   }); 
 
          const drawNode = (context,nextNode) => { 
   
@@ -155,7 +167,7 @@ export class TreeGraphRender {
             //                     y : 350 + (nextNode.getY() * 30) };
             const nodePos = {  x : xCenter + (nextNode.getX() * 40),
                                y : yCenter + (nextNode.getY() * 30) };
-       
+      
              
                 const isLeaf = (nextNode.getChildrenCount() === 0) ? true : false;
 
@@ -201,11 +213,11 @@ export class TreeGraphRender {
 
     renderSegment (context, startPos, endPos, color) {
     
-        context.lineWidth = 2;
         context.beginPath();
         context.moveTo(startPos.x, startPos.y);
         context.lineTo(endPos.x, endPos.y);
         context.strokeStyle = color;
+        context.lineWidth = 1;
         
         context.stroke(); 
     }
@@ -222,48 +234,24 @@ export class TreeGraphRender {
 
         var ctx = this.#canvas.getContext("2d");
 
-      
-
         let xCenter = this.#marginX + (this.#treeWidthSpan/2); 
         let yCenter = this.#marginY;
 
         //this.renderTreeGraphBasic( ctx, xCenter, yCenter );
+      
         this.renderTreeGraphReingold( ctx, xCenter, yCenter );
     }
 
-    draw(xStartPos, yStartPos) {
+    draw(xPos, yPos) {
 
         var ctx = this.#canvas.getContext("2d");
 
-    
         // let xCenter = this.#marginX + xPos;
-        // let xCenter = window.innerWidth / 2;
-        // let yCenter = this.#marginY + yStartPos ;
-        // // // let yCenter = this.#canvas.height  / 2;
-        // console.log(canvas.width); // 300
-        let xCenter = 50;
-        let yCenter = yStartPos ;
-    
+        // let yCenter = this.#marginY + yPos;
 
-         this.renderTreeGraphReingold( ctx, xCenter, yCenter );
+        let xLeftBorder = xPos;
+        let yTopBorder = yPos;
 
-
-         /////////////////////////
-
-        //  ctx.beginPath();
-        //  ctx.moveTo(50, 50);
-        //  ctx.lineTo(50, 600);
-        //  ctx.strokeStyle = "#ff0000";
-        //  ctx.stroke(); 
-
-        //   ctx.beginPath();
-        //  ctx.moveTo(625, 50);
-        //  ctx.lineTo(625, 600);
-        //  ctx.strokeStyle = "#ff0000";
-        //  ctx.stroke();
-
-
-         /////////////////////////
-
+         this.renderTreeGraphReingold( ctx, xLeftBorder, yTopBorder );
     }
 }
