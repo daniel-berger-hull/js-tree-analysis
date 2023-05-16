@@ -46,7 +46,7 @@ export const init = () => {
 
 
    // 'Init: Create Random Values for Nodes...
-    for (let i=0;i<35;i++) {
+    for (let i=0;i<15;i++) {
         const newValue = Math.round( Math.random() * 99) + 1;
         allNodes.push(newValue);
     }
@@ -66,44 +66,51 @@ export const init = () => {
     //allNodes.push(25,75,15,35,30,40,45) ;   // Case Left and Right Rotation special case...
     
     // allNodes.push(35,20,15) ;   //  Case Right-X Rotation case
-    //allNodes.push(25,75,15,35,30,40,45) ;   // Case Left and Right Rotation special case...
+    // allNodes.push(25,75,15,35,30,40,45) ;   // Case Left and Right Rotation special case...
  
 
 
     // allNodes.push(39, 18, 97, 40, 52, 75, 15, 40, 5, 34);
+
+    // allNodes.push(36, 34, 96, 45, 53, 81, 18, 5, 89, 13, 7, 96, 74, 58, 58, 43, 56, 29, 74, 73, 20, 73, 95, 43, 28);
 
     console.log("Init: Initial Random values:");
     console.log( allNodes );
 
     // Inserting all the random values in the tree..."
     allNodes.forEach( (element) => {  treeGraph1.insert(element); })
-
     treeGraph1.recalculateDepth();
     // treeGraph1.displayNodes();
 
+ 
 
     treeGraph1.deepCopy(treeGraph2);
-
-  
-    treeGraph2.recalculateDepth();
     treeGraph2.reorderAVLTree();
-
+    treeGraph2.recalculateDepth();
+    
     // console.log(`%c Value Right after  reorderAVLTree on treeGraph2:`,"color:purple");
     // treeGraph2.displayNodes();
 
     //
     
-    console.log(`%c Value after recalculate of treeGraph2:`,"color:green");
+
+
+   
+    console.log(`%c Get SubTree Width :`,"color:green");
+  
+    const root1 = treeGraph1.getRootNode();
+    const root2 = treeGraph2.getRootNode();
     
-    treeGraph2.recalculateDepth();
-    // treeGraph2.displayNodes();
 
-    var infoBox1 = document.getElementById("infoBox1");
-    var infoBox2 = document.getElementById("infoBox2");
+    console.log("First Root is " + root1.getSubTreeWidth());
+    console.log("\t" + root1.getLeftChild().getSubTreeWidth());
+    console.log("\t" + root1.getRightChild().getSubTreeWidth());
+    
+    console.log("Second Root is " + root2.getSubTreeWidth());
+    console.log("\t" + root2.getLeftChild().getSubTreeWidth());
+    console.log("\t" + root2.getRightChild().getSubTreeWidth());
 
-    infoBox1.setAttribute("size", "3");
-    infoBox1.setAttribute("height", "3");
-    infoBox1.setAttribute("width", "9");
+    
 
 
  }
@@ -134,10 +141,20 @@ export const render = () => {
 
 
 
-    
+    var infoBox1 = document.getElementById("infoBox1");
+    infoBox1.setAttribute("size", treeGraph1.getSize());
+    infoBox1.setAttribute("height",  treeGraph1.getDepth() );
+    infoBox1.setAttribute("width", treeGraph1.getWidth()  );
+
+    var infoBox2 = document.getElementById("infoBox2");
+    infoBox2.setAttribute("size", treeGraph2.getSize());
+    infoBox2.setAttribute("height",  treeGraph2.getDepth() );
+    infoBox2.setAttribute("width", treeGraph2.getWidth()  );
 
 
+
     
+
 
     // treeRender1.displaySepcs();
 

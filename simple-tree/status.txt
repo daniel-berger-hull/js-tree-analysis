@@ -1,3 +1,11 @@
+May 16
+======
+
+  There is a problem with the copy of TreeGraph, as the modifications on the copy are not refleclted (i.e height, width always stay the same as the source)
+
+  To DO:
+      Add a clear on the TreeGraph object...
+
 May 4
 =====
 

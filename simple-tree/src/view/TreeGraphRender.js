@@ -1,4 +1,4 @@
-import { BasicRenderingAlgo } from './BasicRenderingAlgo.js';
+import { BasicRenderingAlgo }    from './BasicRenderingAlgo.js';
 import { ReingoldRenderingAlgo } from './ReingoldRenderingAlgo.js';
 
 
@@ -46,8 +46,7 @@ export class TreeGraphRender {
 
     #init() {
 
-     
-        const canvasSpecs = {  width: this.#canvas.width,
+        const canvasSpecs = {  width:  this.#canvas.width,
                                height: this.#canvas.height };
         
         this.#reingoldRenderingAlgo = new  ReingoldRenderingAlgo(this.#treeGraph,canvasSpecs);
@@ -103,8 +102,6 @@ export class TreeGraphRender {
     
         this.#basicRenderAlgo.calculateNodesLocations (xCenter,yPos);
 
-
-
         const resultnodes     = this.#basicRenderAlgo.getRenderNodes();
         const resultSegments  = this.#basicRenderAlgo.getRenderSegments();
 
@@ -130,30 +127,8 @@ export class TreeGraphRender {
          const x = this.#treeGraph.getRootNode().getX();
          const y = this.#treeGraph.getRootNode().getY();
 
-        //  const displayNodesPositions = (node) => {
-        //     if (node ===  null)  return;
-
-        //     if ( node.getLeftChild() !==  null)     displayNodesPositions(node.getLeftChild());
-        //     console.log(`Node ${node.getValue()} at [${node.getX()},${node.getY()}]`)
-        //     if ( node.getRightChild() !==  null)    displayNodesPositions(node.getRightChild());
-
-        //  }
-
-        //  console.log(`%c Display Node Position:`, "color:red");
-        //  displayNodesPositions(this.#treeGraph.getRootNode());
-         
-        //  console.log(`%c After Reingo Algo, node is ${x}, ${y}`, "color:red");
- 
- 
-
          const resultSegments  = this.#reingoldRenderingAlgo.getRenderSegments();
 
-        //  resultSegments.forEach( segment => { this.renderSegment(  context, 
-        //                                                          { x: 100 + (segment.xStart*40), 
-        //                                                            y: 350 + (segment.yStart*30) } , 
-        //                                                          { x: 100 + (segment.xEnd  *40),   
-        //                                                            y: 350 + (segment.yEnd  *30)} , 
-        //                                                            "#FF0000")   });
         resultSegments.forEach( segment => { this.renderSegment(  context, 
                                             {   x: xCenter + (segment.xStart*40), 
                                                 y: yCenter + (segment.yStart*30) } , 
@@ -163,8 +138,6 @@ export class TreeGraphRender {
 
          const drawNode = (context,nextNode) => { 
   
-            //  const nodePos = {  x : 100 +   (nextNode.getX() * 40),
-            //                     y : 350 + (nextNode.getY() * 30) };
             const nodePos = {  x : xCenter + (nextNode.getX() * 40),
                                y : yCenter + (nextNode.getY() * 30) };
       
@@ -186,12 +159,7 @@ export class TreeGraphRender {
         context.beginPath();
         context.arc(position.x, position.y, size, 0, 2 * Math.PI);
 
-
-        // context.fillStyle = 'white';
         context.fillStyle = (isLeaf === true) ? 'blue' : 'white';
-
-
-    
 
         context.fill();
         context.lineWidth = 2;
@@ -224,7 +192,7 @@ export class TreeGraphRender {
 
 
     //Responsibility of TreeGraphRender
-    // * Should determined the center pos the where the graph to be drawn
+    // * Should determine the center pos the where the graph to be drawn
     // * Should delegated to a Render Algo the calculation of nodes' location on the rendering
     // * Should be the one drawing, from a solution of locations from an Algo class
     // ------------------------------------------

@@ -32,7 +32,6 @@ export class Node {
     }
 
     getValue()           {    return this.#value;               }     
-    getHeight()          {    return this.#height;              }
 
     getX()               {    return this.#x;                   }
     getY()               {    return this.#y;                   }
@@ -41,8 +40,6 @@ export class Node {
     
 
     getValue()           {    return this.#value;               } 
-    getHeight()          {    return this.#height;              }
-    // getChildDelta()     {    return this.#childHeightDelta;   }
 
     toString()          { return `${this.getValue()} , Height=${this.getHeight()},  Child Delta=${this.getChildDelta()}`; }
 
@@ -90,17 +87,12 @@ export class Node {
         return allChildCount;    // Plus one, as you have to count yourself as member of this Sub Tree..
     }
 
-
-   
-
-
     getChildDelta()  {
 
         const leftHeight = (this.getLeftChild() !== null) ? this.getLeftChild().getHeight() : 0;
         const rightHeight = (this.getRightChild() !== null) ? this.getRightChild().getHeight() : 0;
         
         return leftHeight-rightHeight;  
-        
     }
 
     getValues() {
@@ -147,8 +139,8 @@ export class Node {
     //Implicit here, children with value equal to this node value are put to the right of this value...
     insertChild(child) {
       
-        if (!this.isValidValue(child)) return;
-
+        if (!this.isValidValue(child.getValue())) return;
+        
         if (child.getValue() < this.getValue()) {
 
             if ( this.#leftChild !== null)
@@ -167,16 +159,13 @@ export class Node {
     }
 
 
-
     getHeight() {
 
         let leftHeight  = 0;
         let rigthHeight = 0;
         
-
         if ( this.getLeftChild()  !==  null )   leftHeight  =  this.getLeftChild().getHeight();
         if ( this.getRightChild() !==  null )   rigthHeight =  this.getRightChild().getHeight();
-
 
         //First case Leaf: has not left or right subtree, only itself so minimal depth is one
         if ( (leftHeight === 0) && (rigthHeight === 0))    
@@ -196,20 +185,18 @@ export class Node {
 
     getSubTreeWidth() {
 
-      
-        const getSubWidth = (childNode) => {
+        const _getSubWidth = (childNode) => {
 
             const childCount = childNode.getChildrenCount();
             let   leftWidth = 0;
             let   rigthWith = 0;
 
-
             //The leafs of the tree have only themselve, or a width of 1 in other words...
             if ( childCount === 0 )  return 1;
 
             // We need the width of the subtrees to continue the calculation, so using recursivity to get this info, before moving further...
-            if ( childNode.getLeftChild()  !==  null )   leftWidth = getSubWidth(childNode.getLeftChild());
-            if ( childNode.getRightChild() !==  null )   rigthWith = getSubWidth(childNode.getRightChild());
+            if ( childNode.getLeftChild()  !==  null )   leftWidth = _getSubWidth(childNode.getLeftChild());
+            if ( childNode.getRightChild() !==  null )   rigthWith = _getSubWidth(childNode.getRightChild());
         
             // Ehen the simplest case is that one side of the tree is empty  (then count of 0), and the other has only one leaf (then count of 1), then it is a vertical subtree, widht is 1 
             if ( (leftWidth+rigthWith) === 1)  return 1;
@@ -223,13 +210,8 @@ export class Node {
             return leftWidth + 1 + rigthWith;
         }
 
-        return getSubWidth(this);
-
-           
+        return _getSubWidth(this);
     }
-
-    
-
 
 }
 

@@ -21,7 +21,11 @@ export class TreeGraph {
 
     getRootNode()                { return this.#rootNode; };
     getDepth()                   { return this.#depth;    };
-    getWidth()                   { return this.#width;    };
+//    getWidth()                   { return this.#width;    };
+    getWidth()                   { return this.#rootNode.getSubTreeWidth();    };
+
+
+    getSize()                    { return this. getValuesInOrder().length };
 
 
     setRootNode(newRoot) { 
@@ -48,31 +52,33 @@ export class TreeGraph {
         let newNode = new Node(newValue);
         this.getRootNode().insertChild(newNode);
 
-
-       
-
         return newValue;
     }
 
+ 
+    //Will recreate a completely new tree, where each nodes is re created, instead of using a reference to the nodes of the source tree...
     deepCopy(destinationTree) {
 
-       
-         const _deepCopy = (destination, node) => {
+        const _deepCopy = (sourceNode, destinationNode) => {
 
-            destination.insert( node.getValue() );
+            if ( sourceNode === null )   return;                 // Safeguard here, but this condition should normally new happen...
+            
+            if ( destinationNode === null ) {                   // the first execution, when at the root of the tree is problematic, is this check is required
+                destinationNode = new Node(sourceNode.getValue()); 
+            } else
+                destinationNode.insert( sourceNode.getValue() );
 
-            //this.reorderAVLTree();
+            if ( sourceNode.getLeftChild()  !==  null )   _deepCopy( sourceNode.getLeftChild(),  destinationNode );
+            if ( sourceNode.getRightChild() !==  null )   _deepCopy( sourceNode.getRightChild(), destinationNode ); 
 
-            if ( node.getLeftChild()  !==  null )   _deepCopy( destination, node.getLeftChild() );
-            if ( node.getRightChild() !==  null )   _deepCopy( destination, node.getRightChild() ); 
-
+            return destinationNode;
         }
 
-        _deepCopy(destinationTree, this.getRootNode());
+       const copiedRootNode = _deepCopy(this.getRootNode() ,null );
+       destinationTree.setRootNode(copiedRootNode);
+   }
 
-    }
-
-    // If found, Will return a node with value searched for ...
+    // If the value is found, it will return a node with value searched for ...
     find(value) {
 
         const findInChild = ( node, value ) => {
@@ -130,10 +136,10 @@ export class TreeGraph {
          // To find the total possible width of the root and its sub nodes 
         // Note: The width doesn't imply that there are 'width' nodes at the last layer of the tree,
         //       but  it is a possible maximum width...
+        // Note 2: this method to determine the width is not very pratical, as it doesn't take into consideration any content of the tree, which really affects its actual width... use the Node's getSubTreeWidth instead...
         this.#width =  1 << (this.#depth-1);      
 
-
-        this.getRootNode().getHeight();
+        this.getRootNode().getHeight();         // This call is not very elegent
     }
 
 
@@ -298,48 +304,6 @@ export class TreeGraph {
     }
 
    
-    // Used to be necessary in the rightLeftRotation method...
-    // specialLeftRotation(parent,node){
-
-    //     let tmp = node;
-
-    //     node = node.getRightChild();
-    //     tmp.setRightChild(node.getLeftChild());
-    //     node.setLeftChild(tmp);
-        
-    //     if (parent !== null) {
-    //         if (node.getValue()<parent.getValue())
-    //             parent.setLeftChild(node);
-    //         else
-    //             parent.setRightChild(node); 
-    //     } else
-    //         this.setRootNode(node);
-
-    //     this.getRootNode().getHeight();
-    // }
-
-  
-    // Used to be necessary in the LeftRightRotation method...
-    // specialRightRotation(parent,node){
-
-    //     let tmp = node;
-
-    //     node = node.getLeftChild();
-    //     tmp.setLeftChild(node.getRightChild());
-    //     node.setRightChild(tmp);
-       
-    //     if (parent !== null)        
-    //         if (node.getValue()<parent.getValue())
-    //             parent.setLeftChild(node);
-    //         else
-    //             parent.setRightChild(node); 
-    //      else
-    //         this.setRootNode(node);
-        
-    //     this.getRootNode().getHeight();
-
-    // }
-
 
    
 
