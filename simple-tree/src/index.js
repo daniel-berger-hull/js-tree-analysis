@@ -46,7 +46,7 @@ export const init = () => {
 
 
    // 'Init: Create Random Values for Nodes...
-    for (let i=0;i<15;i++) {
+    for (let i=0;i<35;i++) {
         const newValue = Math.round( Math.random() * 99) + 1;
         allNodes.push(newValue);
     }
@@ -88,28 +88,11 @@ export const init = () => {
     treeGraph2.reorderAVLTree();
     treeGraph2.recalculateDepth();
     
-    // console.log(`%c Value Right after  reorderAVLTree on treeGraph2:`,"color:purple");
-    // treeGraph2.displayNodes();
-
-    //
     
-
-
-   
     console.log(`%c Get SubTree Width :`,"color:green");
   
     const root1 = treeGraph1.getRootNode();
     const root2 = treeGraph2.getRootNode();
-    
-
-    console.log("First Root is " + root1.getSubTreeWidth());
-    console.log("\t" + root1.getLeftChild().getSubTreeWidth());
-    console.log("\t" + root1.getRightChild().getSubTreeWidth());
-    
-    console.log("Second Root is " + root2.getSubTreeWidth());
-    console.log("\t" + root2.getLeftChild().getSubTreeWidth());
-    console.log("\t" + root2.getRightChild().getSubTreeWidth());
-
     
 
 
@@ -118,7 +101,6 @@ export const init = () => {
 
 
 export const render = () => {
-    // console.log("Render called...");
     var canvas = document.getElementById("tree-canvas");
     var canvas2 = document.getElementById("tree-canvas2");
 
@@ -132,13 +114,8 @@ export const render = () => {
     const tree1CanvasHeight = (treeGraph1.getDepth() * 30) + 25 + 25;
     const tree2CanvasHeight = (treeGraph2.getDepth() * 30) + 25 + 25;
     
-
-  //treeRender2.draw(50, 100 + (treeGraph1.getDepth() * 30) );
-
-
     canvas.height  = tree1CanvasHeight;
     canvas2.height = tree2CanvasHeight;
-
 
 
     var infoBox1 = document.getElementById("infoBox1");
@@ -150,10 +127,6 @@ export const render = () => {
     infoBox2.setAttribute("size", treeGraph2.getSize());
     infoBox2.setAttribute("height",  treeGraph2.getDepth() );
     infoBox2.setAttribute("width", treeGraph2.getWidth()  );
-
-
-
-    
 
 
     // treeRender1.displaySepcs();
@@ -172,10 +145,6 @@ export const render = () => {
     //treeRender2.draw(50, 300);
     //treeRender2.draw(50, 100 + (treeGraph1.getDepth() * 30) );
     treeRender2.draw(50, 5);
-    
-    
-
-
 
 }
 

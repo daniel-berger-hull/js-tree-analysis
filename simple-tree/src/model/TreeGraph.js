@@ -304,16 +304,12 @@ export class TreeGraph {
     }
 
    
-
-   
-
     reorderAVLTree() {
 
 
         let parentNode = null;
         
 
-        console.log("reorderAVLTree");
         const _reorder = ( parent, node  ) => {
 
             if ( node.getLeftChild() !==  null)    _reorder( node, node.getLeftChild() );
@@ -323,12 +319,12 @@ export class TreeGraph {
             if ( node.getChildDelta() > AVL_MAX_CHILD_DELTA ) {
 
                 if ( node.getLeftChild().getChildDelta() >= 0) {
-                    console.log(`Node ${node.getValue()} needs an AVL  Right rotation (delta is ${node.getChildDelta()})}`);
+                    //console.log(`Node ${node.getValue()} needs an AVL  Right rotation (delta is ${node.getChildDelta()})}`);
                     this.rightRotation(parent, node);
                 }
                     
                 else {
-                    console.log(`Node ${node.getValue()} needs an AVL  Right-Left rotation (delta is ${node.getChildDelta()})}`);
+                    //console.log(`Node ${node.getValue()} needs an AVL  Right-Left rotation (delta is ${node.getChildDelta()})}`);
                     this.rightLeftRotation(parent, node);
                 }
 
@@ -338,12 +334,12 @@ export class TreeGraph {
                 
 
                 if ( node.getRightChild().getChildDelta() <= 0) {
-                    console.log(`Node ${node.getValue()} needs an AVL Left  rotation (delta is ${node.getChildDelta()})}`);
+                    //console.log(`Node ${node.getValue()} needs an AVL Left  rotation (delta is ${node.getChildDelta()})}`);
                     this.leftRotation(parent, node);
                 }
                     
                 else {
-                    console.log(`Node ${node.getValue()} needs an AVL Left-Right  rotation (delta is ${node.getChildDelta()})}`);
+                    //console.log(`Node ${node.getValue()} needs an AVL Left-Right  rotation (delta is ${node.getChildDelta()})}`);
                     this.leftRightRotation(parent, node);
                 }
             }

@@ -26,21 +26,15 @@
         <div class="page">
             <div id="center-section">
                <h3>Tree Analysis</h3>
-             
-             
-               
-
-
-               <!-- <canvas id="tree-canvas" width="1200px"  height="800px">Your browser does not support the HTML5 canvas tag.</canvas>               -->
-               
-               <div class="canvas-box">
+                            
+               <div class="canvas-box" id="canvasbox1">
                     <div class="canvas-box-label">
                         <tree-info-box id="infoBox1" class="testCustoms"  size="2" height="3" width="1" fontcolor="#0046BE" dan="5"></tree-info-box>                     
                     </div>
                     <canvas id="tree-canvas" width="1200px"  height="400px">Your browser does not support the HTML5 canvas tag.</canvas>              
                </div>
 
-               <div class="canvas-box">
+               <div class="canvas-box" id="canvasbox2">
                     <div class="canvas-box-label">
                         <tree-info-box id="infoBox2" class="testCustoms" size="31"  height="9" width="-1" fontColor="#D42869"></tree-info-box> 
                     </div>
@@ -58,18 +52,35 @@
 
 
          init();
+         updateCanvasSize();
          render();
 
-
-         function windowResize() {
-
+         function updateCanvasSize() {
             const canvas = document.getElementById("tree-canvas");
             const canvas2 = document.getElementById("tree-canvas2");
             
+            const canvasbox1 = document.getElementById("canvasbox1");
 
-            canvas.width = window.innerWidth - 150;
-            canvas2.width = window.innerWidth - 150;
             
+
+            canvas.width = canvasbox1.clientWidth - 150;
+            canvas2.width = canvasbox1.clientWidth - 150;
+
+         }
+
+         function windowResize() {
+
+            // const canvas = document.getElementById("tree-canvas");
+            // const canvas2 = document.getElementById("tree-canvas2");
+            
+            // const canvasbox1 = document.getElementById("canvasbox1");
+
+            
+
+            // canvas.width = canvasbox1.clientWidth - 150;
+            // canvas2.width = canvasbox1.clientWidth - 150;
+
+            updateCanvasSize();
             render();        
         }
 
