@@ -48,38 +48,13 @@
 
      <script type="module">
 
-        import { init,render } from './index.js';
+        import { init,updateCanvasSize,render } from './index.js';
 
 
          init();
-         updateCanvasSize();
          render();
 
-         function updateCanvasSize() {
-            const canvas = document.getElementById("tree-canvas");
-            const canvas2 = document.getElementById("tree-canvas2");
-            
-            const canvasbox1 = document.getElementById("canvasbox1");
-
-            
-
-            canvas.width = canvasbox1.clientWidth - 150;
-            canvas2.width = canvasbox1.clientWidth - 150;
-
-         }
-
          function windowResize() {
-
-            // const canvas = document.getElementById("tree-canvas");
-            // const canvas2 = document.getElementById("tree-canvas2");
-            
-            // const canvasbox1 = document.getElementById("canvasbox1");
-
-            
-
-            // canvas.width = canvasbox1.clientWidth - 150;
-            // canvas2.width = canvasbox1.clientWidth - 150;
-
             updateCanvasSize();
             render();        
         }

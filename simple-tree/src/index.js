@@ -80,22 +80,29 @@ export const init = () => {
     // Inserting all the random values in the tree..."
     allNodes.forEach( (element) => {  treeGraph1.insert(element); })
     treeGraph1.recalculateDepth();
-    // treeGraph1.displayNodes();
-
- 
 
     treeGraph1.deepCopy(treeGraph2);
     treeGraph2.reorderAVLTree();
     treeGraph2.recalculateDepth();
     
-    
     console.log(`%c Get SubTree Width :`,"color:green");
   
     const root1 = treeGraph1.getRootNode();
     const root2 = treeGraph2.getRootNode();
+
+
+    updateCanvasSize();
+ }
+
+ export function updateCanvasSize() {
+
+    const canvasbox1 = document.getElementById("canvasbox1");
+    const canvas = document.getElementById("tree-canvas");
+    const canvas2 = document.getElementById("tree-canvas2");
     
-
-
+    
+    canvas.width  = canvasbox1.clientWidth - 150;
+    canvas2.width = canvasbox1.clientWidth - 150;
  }
 
 
