@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graph Traversal</title>
+
+     <link  rel="stylesheet" href="index.css" >
+</head>
+<body>
+    
+      <div class="wrapper">
+        <div id="header">
+            <div class="header-rotated-section">
+                <span class="header-title">Graph Traversal!</span>
+            </div>
+            
+        </div>
+
+        <div id="center-section">
+            <canvas id="graph-canvas" width="1200px"  height="400px">Your browser does not support the HTML5 canvas tag.</canvas>     
+        </div>
+
+       
+
+        <div id="graph-detail-section">
+            <div><span>Details</span></div>
+
+            <div>
+                <span>Node Count</span>
+                <span id="NodeTotalCount"></span>
+            </div>
+
+            <div id="detail-user-section">
+                <span >Deep First Search</span>
+                <input type="text" id="NodeToWorkOn" />
+                <button id="dfs-button">DFS</button>
+               
+             
+
+                <div  id="warning-section">
+                    <img src="warning.png"  width="20px" height="20px"  />
+                    <span id="error-warning-msg">ddd</span>
+
+                </div>
+              
+                   
+               
+                
+     
+            </div>
+
+
+            
+        
+        </div>
+    </div>
+
+    <script type="module">
+
+        import { init,render, updateGraphDetailSection,  dfsButtonClickHandler } from './index.js';
+
+        function windowResize() {
+
+            const canvas = document.getElementById("graph-canvas");
+
+            // console.log("resize Window Size" + window.innerWidth + "," +  window.innerHeight);
+
+            canvas.width = window.innerWidth - 60;
+
+            render();        
+        }
+
+        const dfsButton = document.getElementById("dfs-button");
+
+
+         window.addEventListener("resize", windowResize );
+
+         dfsButton.addEventListener("click", dfsButtonClickHandler );
+
+         init();
+         render();
+
+         updateGraphDetailSection();
+
+    </script> 
+
+
+
+
+
+</body>
+</html>

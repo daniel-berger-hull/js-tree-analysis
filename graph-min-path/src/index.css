@@ -1,0 +1,94 @@
+body {
+    background-color: white;
+    color: white;
+    font-family: 'Tahoma', sans-serif;
+}
+
+
+
+
+.wrapper {
+    width: 95%;
+    margin: auto;
+}
+
+#header  {
+    width: 100%;
+    height: 150px;
+    text-align: center;
+    padding: 5px;
+    border: 3px solid #FBED20;
+
+    background-color: #0046BE;;
+
+    box-shadow: 3px 3px 3px black;   
+
+    border-radius: 15px ;
+
+   
+}
+
+.page {
+    width: 100%;
+    background-color: white;
+}
+
+#center-section {
+    
+    margin: auto;
+    text-align: center;
+    background-color: #E4EDF9;
+    color: #003DA6;
+    text-shadow: 1px 1px  black;
+}
+
+
+
+
+#tree-canvas {
+
+    margin: auto;
+    background-image: linear-gradient(#0046BE, #6280b4);
+    border: 3px solid #FBED20;
+
+}
+
+
+
+#tree-canvas2 {
+
+    margin: auto;
+    background-image: linear-gradient(#D42869,#EB6F9C );
+    border: 3px solid #FBED20;
+}
+
+#infoBox1 {
+    background-color: black;
+}
+
+
+/* Note: Since this is for the Web Component 'infoBox', it should not be here, in a general CSS */
+.table-infoBox {
+    border: 1px solid;
+    border-collapse: collapse;
+}
+
+.td-infoBox {
+    border: 1px solid;
+    padding: 3px 10px 3px 10px;
+}
+
+
+.header-rotated-section {
+  
+    -ms-transform: skewY(-3deg); /* IE 9 */
+    transform: skewY(-3deg);
+}
+
+.header-title {
+
+    text-align: center;
+    font-size: 80px;
+    font-weight: bold;
+    text-shadow: 5px 5px 5px black;
+}

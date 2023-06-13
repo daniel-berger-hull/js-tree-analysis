@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Min Graph Path</title>
+
+    <link  rel="stylesheet" href="index.css" >
+
+
+      
+</script> 
+ 
+</head>
+    <body> 
+
+    <div class="wrapper">
+        <div id="header">
+            <div class="header-rotated-section">
+                <span class="header-title">Testing Graph!</span>
+            </div>
+            
+        </div>
+        <div class="page">
+            <div id="center-section">
+               <h3>Graph Analysis</h3>
+                            
+               <div class="canvas-box" id="canvasbox1">
+                    <canvas id="graph-canvas" width="1200px"  height="400px">Your browser does not support the HTML5 canvas tag.</canvas>              
+               </div>
+
+
+            </div>
+        </div>
+       
+    </div>
+
+     <script type="module">
+
+        import { init,updateCanvasSize,render } from './index.js';
+
+
+         init();
+         render();
+
+         function windowResize() {
+            updateCanvasSize();
+            render();        
+        }
+
+        window.addEventListener("resize", windowResize );
+    </script> 
+
+</body>
+</html>
