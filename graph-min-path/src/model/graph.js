@@ -301,7 +301,7 @@ export class GraphRender {
 //     // * Should be the one drawing, from a solution of locations from an Algo class
 //     // ------------------------------------------
 //     // Responsibility of Render Algo 
-//     // * Should  do the detailed calculation of where the nodes
+//     // * Should  do the detailed calculation of where the nodes        
     draw() {
 
         var ctx = this.#canvas.getContext("2d");

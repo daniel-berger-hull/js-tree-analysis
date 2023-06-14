@@ -58,30 +58,11 @@
 
     <script type="module">
 
-        import { init,render, updateGraphDetailSection,  dfsButtonClickHandler } from './index.js';
-
-        function windowResize() {
-
-            const canvas = document.getElementById("graph-canvas");
-
-            // console.log("resize Window Size" + window.innerWidth + "," +  window.innerHeight);
-
-            canvas.width = window.innerWidth - 60;
-
-            render();        
-        }
-
-        const dfsButton = document.getElementById("dfs-button");
-
-
-         window.addEventListener("resize", windowResize );
-
-         dfsButton.addEventListener("click", dfsButtonClickHandler );
+        import { init,render } from './index.js';
 
          init();
          render();
-
-         updateGraphDetailSection();
+         //updateGraphDetailSection();
 
     </script> 
 

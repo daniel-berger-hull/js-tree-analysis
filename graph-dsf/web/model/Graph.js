@@ -2,12 +2,12 @@
 
 
 
-
-
 export class Graph {
 
-  
 
+    #nodeIndexesPath;
+    
+  
     // Constructor
     constructor(v)
     {
@@ -16,12 +16,20 @@ export class Graph {
         this.values = new Array(v);
         for(let i = 0; i < v; i++)
             this.adj[i] = [];
+
+
+
+        this.selectedNode = 0;
     }
 
     size() {
         return this.V;
     }
-     
+
+    getSelectedNode()         {   return this.selectedNode; }
+    setSelectedNode(index)    {   this.selectedNode = ( index>=0 && index < this.V) ? index : 0; }
+
+    
     // Function to add an edge into the graph
     addEdge(v, w)
     {
@@ -70,7 +78,9 @@ export class Graph {
          
         // Mark the current node as visited and print it
         visited[v] = true;
-        console.log(v + " ");
+       // console.log(v + " ");
+
+        this.#nodeIndexesPath.push(v);
   
         // Recur for all the vertices adjacent to this
         // vertex
@@ -87,7 +97,8 @@ export class Graph {
     // DFSUtil()
     DFS(v)
     {
-         
+         this.#nodeIndexesPath = [];
+        
         // Mark all the vertices as
         // not visited(set as
         // false by default in java)
@@ -99,6 +110,8 @@ export class Graph {
         // function to print DFS
         // traversal
         this.DFSUtil(v, visited);
+
+        return this.#nodeIndexesPath;
     }
 
 

@@ -91,19 +91,13 @@ export class GraphRender {
                  height: this.#canvas.height};
     }
 
-    draw() {
 
-        var ctx = this.#canvas.getContext("2d");
-        const graph = this.#graphObject;
+    drawSegments(ctx, graph, nodePosArray) {
 
-        const nodePositions = determinePos( graph, this.getCanvasSpecs()  );
-
-
-
-         for (let i=0;i<graph.size();i++) {
+        for (let i=0;i<graph.size();i++) {
             const nextNodeValue = graph.getNodeValue(i);
-            const startNodePos =   { x: nodePositions[i].x,        
-                                     y: nodePositions[i].y };
+            const startNodePos =   { x: nodePosArray[i].x,        
+                                     y: nodePosArray[i].y };
 
 
             const edges =  graph.getEdgesForNode(i);
@@ -113,7 +107,7 @@ export class GraphRender {
 
                 if (index !== i) {
                    // console.log(i + " to " + index);
-                    const endNodePos =   { x: nodePositions[index].x,   y: nodePositions[index].y };
+                    const endNodePos =   { x: nodePosArray[index].x,   y: nodePosArray[index].y };
                     this.renderSegment(  ctx,  startNodePos,  endNodePos, "#00FF00"); 
                 } else {
                     console.log("Render: an edge on the same node detected!");
@@ -121,17 +115,67 @@ export class GraphRender {
                 }
                
             });           
+        }
+    }
 
+
+    drawPath(ctx, graph, nodePosArray) {
+
+        const seletectedNodeIndex = graph.getSelectedNode();
+        const path = graph.DFS(seletectedNodeIndex);
+      
+        console.log("Display path from node :" + seletectedNodeIndex);
+
+        let startIndex = path[0];
+        let startNodePos =   { x: nodePosArray[startIndex].x,        
+                               y: nodePosArray[startIndex].y };        
+
+        for (let i=1;i<path.length;i++) {
+
+            let endIndex = path[i];
+            let endNodePos =   {   x: nodePosArray[endIndex].x,        
+                                   y: nodePosArray[endIndex].y }; 
+
+            this.renderSegment(  ctx,  startNodePos,  endNodePos, "#FF0000"); 
+            
+            startNodePos = endNodePos;
+                
         }
 
+       // path.forEach( index => { console.log(index)});
 
-        // Draw the node on top of the segments...
-        nodePositions.forEach( (pos,index) => { 
+
+
+    }
+
+
+    
+
+    drawNodes(ctx, nodePosArray) {
+
+          // Draw the node on top of the segments...
+          nodePosArray.forEach( (pos,index) => { 
             //this.renderNode( ctx, pos, 10 ,  graph.getNodeValue(index)  ,true) ; 
             this.renderNode( ctx, pos, 10 ,  index  ,true) ; 
             
            
         });
+
+        
+    }
+
+    draw() {
+
+        var ctx = this.#canvas.getContext("2d");
+        const graph = this.#graphObject;
+        const nodePositions = determinePos( graph, this.getCanvasSpecs()  );
+
+
+        this.drawSegments(ctx, graph, nodePositions);
+        this.drawPath(ctx, graph, nodePositions);
+        this.drawNodes(ctx, nodePositions);
+       
+      
 
     }
 
