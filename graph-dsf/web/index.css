@@ -75,14 +75,57 @@ body {
     border: 2px solid #FBED20;
     box-shadow: 5px 5px 5px black;   
     border-radius: 8px;
+    font-size: 12px;
+}
+
+
+
+#graph-distribution-radio-section {
+   margin: auto;
+   width: 30%;
+}
+
+#graph-distribution-list {
+    list-style-type: none;
+    overflow: hidden;
+}
+
+.graph-distribution-radio {
+    display: block;
+    float: left;   
+}
+
+
+
+
+#graph-detail-section-title {
+
+    color: yellow;
+    font-size: 20px;
+    text-shadow: 2px 2px 2px black;
+
+}
+
+#graph-detail-section-node-count {
+    
+    background-color: black;
+
+}
+
+#graph-detail-section-node-count-input {
+   
+    background-color: pink;
 }
 
 
 #detail-user-section {
     display: flex;
     column-gap: 10px;
+    align-items: center;
    
 }
+
+
 
 #NodeTotalCount {
     color: #FBED20;

@@ -19,20 +19,36 @@
 
         <div id="center-section">
             <canvas id="graph-canvas" width="1200px"  height="400px">Your browser does not support the HTML5 canvas tag.</canvas>     
+            
+
+            <div id="graph-distribution-radio-section">
+                <ul id="graph-distribution-list">
+                    <li class="graph-distribution-radio"><input type="radio" id="circular-rendering" name="fav_language" value="Circular"><img src="circular.png" width="20px" height="20px"></li>
+                    <li class="graph-distribution-radio"><input type="radio" id="concentric-rendering" name="fav_language" value="Concentric"><img src="concentric.png" width="20px" height="20px"></li>
+                    <li class="graph-distribution-radio"><input type="radio" id="random-rendering" name="fav_language" value="Random"><img src="Random.png" width="20px" height="20px"></li>
+                </ul>
+            </div>
         </div>
 
        
 
-        <div id="graph-detail-section">
-            <div><span>Details</span></div>
+        
 
+        <div id="graph-detail-section">
+
+             <div id="graph-detail-section-title">Details</div>
+             
             <div>
                 <span>Node Count</span>
                 <span id="NodeTotalCount"></span>
             </div>
 
-            <div id="detail-user-section">
+            <div> 
                 <span >Deep First Search</span>
+            </div>
+            <div id="detail-user-section">
+               
+                <span >Start Node</span>
                 <input type="text" id="NodeToWorkOn" />
                 <button id="dfs-button">DFS</button>
                
@@ -43,16 +59,12 @@
                     <span id="error-warning-msg">ddd</span>
 
                 </div>
-              
-                   
-               
-                
-     
             </div>
-
-
-            
-        
+            <div>
+                <span >Search all paths</span>
+                <button id="dfs-all-path-button">All Paths!</button>
+            </div>
+    
         </div>
     </div>
 
@@ -65,6 +77,7 @@
          //updateGraphDetailSection();
 
     </script> 
+
 
 
 

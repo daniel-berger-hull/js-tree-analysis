@@ -17,8 +17,6 @@ export class Graph {
         for(let i = 0; i < v; i++)
             this.adj[i] = [];
 
-
-
         this.selectedNode = 0;
     }
 
@@ -111,12 +109,16 @@ export class Graph {
         // traversal
         this.DFSUtil(v, visited);
 
+        // console.log("DFS search Result, staring node index " + this.getSelectedNode());
+        console.log(this.#nodeIndexesPath);
+
         return this.#nodeIndexesPath;
     }
 
 
     toString() {
         console.log("Graph toString()");
+
     }
     
 }

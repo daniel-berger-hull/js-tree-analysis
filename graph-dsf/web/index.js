@@ -11,8 +11,15 @@ const MAX_EDGE_NUMBER  = 2;
 const ERROR_MESSAGE_TIMEOUT = 3000;
 
 
+const CIRCULAR_GRAPH_RENDERING    = 1;
+const CONCENTRIC_GRAPH_RENDERING  = 2;
+const RANDOM_GRAPH_RENDERING      = 3;
+
+
 let graph;
 
+
+let renderingMode = CIRCULAR_GRAPH_RENDERING;
 
 
 
@@ -31,6 +38,21 @@ const setEventHandlers  = () => {
 
      const dfsButton = document.getElementById("dfs-button");
      dfsButton.addEventListener("click", dfsButtonClickHandler );
+
+     const dfsAllPathButton = document.getElementById("dfs-all-path-button");
+     dfsAllPathButton.addEventListener("click", dfsAllPathButtonClickHandler );
+
+
+     const radioButtons = ["circular-rendering","concentric-rendering","random-rendering"];
+
+
+     radioButtons.forEach( radioID => {
+
+        const radioButton = document.getElementById(radioID);
+        radioButton.addEventListener("click", renderingButtonClickHandler );
+
+     });
+     
 
 }
 
@@ -55,8 +77,6 @@ const windowResizeHandler = () => {
 
 const dfsButtonClickHandler  = () => {
 
-    //const nodeInput = document.getElementById("NodeToWorkOn");
-
     const value = document.getElementById("NodeToWorkOn").value;
 
     if( isNaN(value) )   {
@@ -71,7 +91,52 @@ const dfsButtonClickHandler  = () => {
         return;
       }
     
+      graph.setSelectedNode(value);
+
+      render();
+
 }
+
+const dfsAllPathButtonClickHandler  = () => {
+
+
+    const nbrNodes = graph.size();
+
+    console.log("Find path for all " + nbrNodes + "Nodes");
+
+
+
+    for (let i=0;i<nbrNodes;i++) {
+
+        graph.setSelectedNode(i);
+        const path = graph.DFS(i);
+        console.log(`${i} - ${path}`);
+
+        if (path.length === nbrNodes) 
+            console.log("%cComplete",'color: #00ff00');
+        else
+            console.log(`%cPartial ${path.length}`,'color: #ff0000');
+
+    }
+}
+
+const renderingButtonClickHandler = (event) => {
+
+
+    if ( event.currentTarget.id === "circular-rendering") {
+        console.log("Click circular-rendering");
+        renderingMode = CIRCULAR_GRAPH_RENDERING;
+    } else if ( event.currentTarget.id === "concentric-rendering") {
+        console.log("Click concentric-rendering");
+        renderingMode = CONCENTRIC_GRAPH_RENDERING;
+    } else if ( event.currentTarget.id === "random-rendering") {
+        console.log("Click random-rendering");
+        renderingMode = RANDOM_GRAPH_RENDERING;
+    } 
+
+
+}
+
 
 
 
@@ -156,8 +221,8 @@ export const render = () => {
 
 
 
-    let render = new GraphRender(canvas,graph);
-    render.draw();
+    let renderObject = new GraphRender(canvas,graph);
+    renderObject.draw();
 
 
     updateGraphDetailSection();
