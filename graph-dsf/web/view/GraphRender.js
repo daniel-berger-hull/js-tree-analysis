@@ -4,6 +4,9 @@
 // import { Graph }      from '../model/Graph.js';
 import  { determinePos } from './NodeSpaceLocator.js';
 
+import { CIRCULAR_GRAPH_RENDERING  , CONCENTRIC_GRAPH_RENDERING  ,RANDOM_GRAPH_RENDERING  } from './RenderingConstants.js';
+
+
 
 // This class should only draw on the Canvas, and the calculations required, like the locations of the node shouhld be delegated to some other classes or functions...
 // The reason is that the way we spread the nodes on a the screen can be done in many differents ways, but things like draw a node or segment alway stay the same and should be done in this class only
@@ -14,13 +17,15 @@ export class GraphRender {
 
     #canvas;   
     #graphObject;
+    #renderingMode;
 
-    constructor(targetCanvas, graph) {
+    constructor(targetCanvas, graph, renderingMode) {
 
         this.#validateParams(targetCanvas,graph);
 
         this.#canvas = targetCanvas;
         this.#graphObject = graph;
+        this.#renderingMode = renderingMode;
         this.#init();
     }
 
@@ -38,6 +43,27 @@ export class GraphRender {
 
         //Note the init may be removed later if no usage is done...
     }
+
+
+    getCanvas()                  { return this.#canvas;         };
+    getGraph()                   { return this.#graphObject;    };
+    getRenderingMode()           { return this.#renderingMode;  };    
+
+
+    setCanvas(canvas)            {  this.#canvas = canvas;       }
+    setGraph(graph)              {  this.#graphObject = graph;   };
+    setRenderingMode(mode)       {  this.#renderingMode;  };    
+
+
+    #isValidRenderingMode(mode) {
+        if (mode < CIRCULAR_GRAPH_RENDERING || mode > RANDOM_GRAPH_RENDERING)  return false;
+        else
+            return true;
+
+
+
+    }
+
 
     renderNode(context, position, size , value, isLeaf) {
 
@@ -142,10 +168,6 @@ export class GraphRender {
                 
         }
 
-       // path.forEach( index => { console.log(index)});
-
-
-
     }
 
 
@@ -153,23 +175,20 @@ export class GraphRender {
 
     drawNodes(ctx, nodePosArray) {
 
-          // Draw the node on top of the segments...
-          nodePosArray.forEach( (pos,index) => { 
-            //this.renderNode( ctx, pos, 10 ,  graph.getNodeValue(index)  ,true) ; 
+        // Draw the node on top of the segments...
+        nodePosArray.forEach( (pos,index) => { 
             this.renderNode( ctx, pos, 10 ,  index  ,true) ; 
-            
-           
         });
-
-        
     }
 
     draw() {
 
         var ctx = this.#canvas.getContext("2d");
         const graph = this.#graphObject;
-        const nodePositions = determinePos( graph, this.getCanvasSpecs()  );
+        const nodePositions = determinePos( graph, this.getCanvasSpecs(), this.getRenderingMode()  );
 
+
+         
 
         this.drawSegments(ctx, graph, nodePositions);
         this.drawPath(ctx, graph, nodePositions);

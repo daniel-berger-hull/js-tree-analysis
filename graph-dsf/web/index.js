@@ -3,6 +3,9 @@
 import { Graph }      from './model/Graph.js';
 import { GraphRender}   from './view/GraphRender.js';
 
+import { CIRCULAR_GRAPH_RENDERING  , CONCENTRIC_GRAPH_RENDERING  ,RANDOM_GRAPH_RENDERING  } from './view/RenderingConstants.js';
+ 
+
 
 const MAX_NODE_NUMBER = 15;
 const MAX_NODE_VALUE  = 50;
@@ -11,9 +14,9 @@ const MAX_EDGE_NUMBER  = 2;
 const ERROR_MESSAGE_TIMEOUT = 3000;
 
 
-const CIRCULAR_GRAPH_RENDERING    = 1;
-const CONCENTRIC_GRAPH_RENDERING  = 2;
-const RANDOM_GRAPH_RENDERING      = 3;
+// const CIRCULAR_GRAPH_RENDERING    = 1;
+// const CONCENTRIC_GRAPH_RENDERING  = 2;
+// const RANDOM_GRAPH_RENDERING      = 3;
 
 
 let graph;
@@ -134,7 +137,7 @@ const renderingButtonClickHandler = (event) => {
         renderingMode = RANDOM_GRAPH_RENDERING;
     } 
 
-
+    render();
 }
 
 
@@ -147,7 +150,7 @@ const renderingButtonClickHandler = (event) => {
 export const init = () => {
 
     //const nbrNodes = Math.round( Math.random() * MAX_NODE_NUMBER ) + 5;
-    const nbrNodes = 8;
+    const nbrNodes = 11;
     
     graph = new Graph(nbrNodes);
 
@@ -221,7 +224,7 @@ export const render = () => {
 
 
 
-    let renderObject = new GraphRender(canvas,graph);
+    let renderObject = new GraphRender(canvas,graph,renderingMode);
     renderObject.draw();
 
 
