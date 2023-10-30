@@ -145,7 +145,7 @@ const renderingButtonClickHandler = (event) => {
 export const init = () => {
 
     //const nbrNodes = Math.round( Math.random() * MAX_NODE_NUMBER ) + 5;
-    const nbrNodes = 11;
+    const nbrNodes = 8;
     
     graph = new Graph(nbrNodes);
 
@@ -154,11 +154,9 @@ export const init = () => {
     for (let i=0;i<nbrNodes;i++) {
 
         const nodeValue = Math.round( Math.random() * MAX_NODE_VALUE ) + 1;
-        //const nbrEdges = Math.round( Math.random() * MAX_EDGE_NUMBER ) + 1;
-
-
         const edges = getRandomEdgeIndexes(i,nbrNodes);
 
+        console.log(`${i} -- ${edges} `);
 
         edges.forEach(index => {
             graph.addEdge(i, index);
@@ -166,16 +164,13 @@ export const init = () => {
 
         graph.setNodeValue(i,nodeValue);
 
-
-        setEventHandlers();
-
-        // By default, the rendering mode is circular
-        document.getElementById('circular-rendering').checked = true;
-        
-
-        //console.log(i + " value is " + " nodeValue, edges --> " + graph.getEdgesForNode(i));
-
     }
+
+
+    setEventHandlers();
+
+    // By default, the rendering mode is circular
+    document.getElementById('circular-rendering').checked = true;
 
 }
 
@@ -239,7 +234,7 @@ const updateGraphDetailSection  = () => {
     for (let i=0;i<nbrNodes;i++) {
 
         const nodeValue = Math.round( Math.random() * MAX_NODE_VALUE ) + 1;    
-        console.log(i + " value is " + " nodeValue, edges --> " + graph.getEdgesForNode(i));
+        console.log(i + " value is " + " [nodeValue, edges] --> " + graph.getEdgesForNode(i));
     }
 
     document.getElementById("NodeTotalCount").innerHTML = nbrNodes;
@@ -267,6 +262,14 @@ const getRandomEdgeIndexes = (currentIndex,nbrNodes) => {
     return indexes;
 }
 
+
+export const main = () => {
+
+    init();
+    render();
+}
+
+main();
 
 
 

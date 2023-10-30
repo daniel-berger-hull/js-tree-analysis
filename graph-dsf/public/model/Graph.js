@@ -8,29 +8,32 @@ export class Graph {
     #nodeIndexesPath;
     
   
-    // Constructor
-    constructor(v)
+    constructor(nbrNodes)
     {
-        this.V = v;
-        this.adj = new Array(v);
-        this.values = new Array(v);
-        for(let i = 0; i < v; i++)
+        this.nbrNodes = nbrNodes;
+        this.adj = new Array(nbrNodes);
+        this.values = new Array(nbrNodes);
+        for(let i = 0; i < nbrNodes ; i++)
             this.adj[i] = [];
 
         this.selectedNode = 0;
     }
 
     size() {
-        return this.V;
+        return this.nbrNodes;
     }
 
     getSelectedNode()         {   return this.selectedNode; }
-    setSelectedNode(index)    {   this.selectedNode = ( index>=0 && index < this.V) ? index : 0; }
+    setSelectedNode(index)    {   this.selectedNode = ( index>=0 && index < this.nbrNodes) ? index : 0; }
 
     
     // Function to add an edge into the graph
     addEdge(v, w)
     {
+
+        this.#validateNodeIndex(v, "addEdge");
+        this.#validateNodeIndex(w, "addEdge");
+        
         // Add w to v's list.
         this.adj[v].push(w);
     }
@@ -100,8 +103,8 @@ export class Graph {
         // Mark all the vertices as
         // not visited(set as
         // false by default in java)
-        let visited = new Array(this.V);
-        for(let i = 0; i < this.V; i++)
+        let visited = new Array(this.nbrNodes);
+        for(let i = 0; i < this.nbrNodes; i++)
             visited[i] = false;
   
         // Call the recursive helper

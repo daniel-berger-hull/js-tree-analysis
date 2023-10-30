@@ -139,7 +139,6 @@ export class GraphRender {
                     console.log("Render: an edge on the same node detected!");
                     this.renderLoopSegment (ctx, startNodePos,  10, "#00FF00");
                 }
-               
             });           
         }
     }
@@ -165,13 +164,9 @@ export class GraphRender {
             this.renderSegment(  ctx,  startNodePos,  endNodePos, "#FF0000"); 
             
             startNodePos = endNodePos;
-                
         }
 
     }
-
-
-    
 
     drawNodes(ctx, nodePosArray) {
 
@@ -187,16 +182,9 @@ export class GraphRender {
         const graph = this.#graphObject;
         const nodePositions = determinePos( graph, this.getCanvasSpecs(), this.getRenderingMode()  );
 
-
-         
-
         this.drawSegments(ctx, graph, nodePositions);
         this.drawPath(ctx, graph, nodePositions);
         this.drawNodes(ctx, nodePositions);
-       
-      
-
     }
-
 
 }
