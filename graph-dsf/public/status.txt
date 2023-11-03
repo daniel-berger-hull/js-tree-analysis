@@ -1,9 +1,0 @@
-June 13
-========
-
-  Starting project of Graph traversal based on the following article:  https://www.geeksforgeeks.org/depth-first-search-or-dfs-for-a-graph/
-
-  To Do:
-  -----
-  * Need to develop other method/class for the positionning of the graph's node (only NodeSpaceLocator.js for the moment)
-  * Need to highlight the path from one selected node to all the other nodes in color
